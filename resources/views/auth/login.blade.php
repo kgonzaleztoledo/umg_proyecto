@@ -2,25 +2,34 @@
 @section('content')
     <div class="main-wrapper">
         <div class="account-content">
+
+                 <!-- Plantilla de maquetacion
             <a href="{{ route('form/job/list') }}" class="btn btn-primary apply-btn">Apply Job</a>
+                    Link de Restauracion
+              -->
+
+
             <div class="container">
-                <!-- Account Logo -->
+              <!-- Logotipo de la cuenta -->
                 <div class="account-logo">
-                    <a href="index.html"><img src="{{ URL::to('assets/img/logo2.png') }}" alt="Soeng Souy"></a>
+                <!-- Account Logo    -->
+                <a href="login"><img src=" {{ URL::to('assets/img/logo2.png') }}" alt="Sistema RRHH"></a>
+
                 </div>
                 {{-- message --}}
                 {!! Toastr::message() !!}
-                <!-- /Account Logo -->
+               <!-- /Logotipo de cuenta -->
                 <div class="account-box">
                     <div class="account-wrapper">
                         <h3 class="account-title">Login</h3>
-                        <p class="account-subtitle">Access to our dashboard</p>
-                        <!-- Account Form -->
+                        <p class="account-subtitle">Sistema de RRHH </p>
+
+                <!-- Formulario de cuenta -->
                         <form method="POST" action="{{ route('login') }}">
                             @csrf
                             <div class="form-group">
-                                <label>Email</label>
-                                <input type="text" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="Enter email">
+                                <label>Correo Electronico:</label>
+                                <input type="text" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="Ingrese Correo Electronico">
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -30,10 +39,10 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col">
-                                        <label>Password</label>
+                                        <label>Password:</label>
                                     </div>
                                 </div>
-                                <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Enter Password">
+                                <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Ingrese Password">
                                 @error('password')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -47,19 +56,22 @@
                                     </div>
                                     <div class="col-auto">
                                         <a class="text-muted" href="{{ route('forget-password') }}">
-                                            Forgot password?
+                                            ¿Has olvidado tu contraseña?
                                         </a>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group text-center">
-                                <button class="btn btn-primary account-btn" type="submit">Login</button>
+                                <button class="btn btn-primary account-btn" type="submit">Entrar</button>
                             </div>
+                                     <!-- /Fin de Formulario de cuenta este emben es link para registrar nuevo usuario
                             <div class="account-footer">
-                                <p>Don't have an account yet? <a href="{{ route('register') }}">Register</a></p>
+                                <p>¿Aún no tienes una cuenta? <a href="{{ route('register') }}">Registrar</a></p>
                             </div>
+                            -->
+
                         </form>
-                        <!-- /Account Form -->
+                        <!-- /Fin de Formulario de cuenta -->
                     </div>
                 </div>
             </div>

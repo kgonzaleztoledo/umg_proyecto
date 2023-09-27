@@ -66,7 +66,7 @@ class LoginController extends Controller
 
         $dt         = Carbon::now();
         $todayDate  = $dt->toDayDateTimeString();
-        
+
         if (Auth::attempt(['email'=> $username,'password'=> $password,'status'=>'Active'])) {
             /** get session */
             $user = Auth::User();
@@ -80,14 +80,14 @@ class LoginController extends Controller
             Session::put('avatar', $user->avatar);
             Session::put('position', $user->position);
             Session::put('department', $user->department);
-            
-            $activityLog = ['name'=> Session::get('name'),'email'=> $username,'description' => 'Has log in','date_time'=> $todayDate,];
-            DB::table('activity_logs')->insert($activityLog);
-            
-            Toastr::success('Login successfully :)','Success');
+
+            $activityLog = ['name'=> Session::get('name'),'email'=> $username,'description' => 'Ha iniciado sesión','date_time'=> $todayDate,];
+            DB::table('bitacora')->insert($activityLog);
+
+            Toastr::success('Se inicio sesión correctamente :)','Éxito');
             return redirect()->intended('home');
         } else {
-            Toastr::error('fail, WRONG USERNAME OR PASSWORD :)','Error');
+            Toastr::error('Falla, en email o contraseña incorrecta :)','Error');
             return redirect('login');
         }
     }
@@ -97,8 +97,8 @@ class LoginController extends Controller
         $dt         = Carbon::now();
         $todayDate  = $dt->toDayDateTimeString();
 
-        $activityLog = ['name'=> Session::get('name'),'email'=> Session::get('email'),'description' => 'Has log out','date_time'=> $todayDate,];
-        DB::table('activity_logs')->insert($activityLog);
+        $activityLog = ['name'=> Session::get('name'),'email'=> Session::get('email'),'description' => 'Ha cerrado sesión','date_time'=> $todayDate,];
+        DB::table('bitacora')->insert($activityLog);
         // forget login session
         $request->session()->forget('name');
         $request->session()->forget('email');
@@ -112,7 +112,7 @@ class LoginController extends Controller
         $request->session()->forget('department');
         $request->session()->flush();
         Auth::logout();
-        Toastr::success('Logout successfully :)','Success');
+        Toastr::success('Se cerro con éxito sesión :)','exitosamente ');
         return redirect('login');
     }
 

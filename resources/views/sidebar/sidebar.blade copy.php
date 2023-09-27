@@ -14,21 +14,19 @@
                     </a>
                     <ul style="{{ request()->is('/*') ? 'display: block;' : 'display: none;' }}">
                         <li><a class="{{set_active(['home'])}}" href="{{ route('home') }}">Panel de administración</a></li>
-                        <li><a class="{{set_active(['em/dashboard'])}}" href="#">Panel de empleados</a></li>
+                        <li><a class="{{set_active(['em/dashboard'])}}" href="{{ route('em/dashboard') }}">Panel de empleados</a></li>
                     </ul>
                 </li>
                 @if (Auth::user()->role_name=='Admin')
                     <li class="menu-title"> <span>Authentication</span> </li>
                     <li class="{{set_active(['search/user/list','userManagement','activity/log','activity/login/logout'])}} submenu">
                         <a href="#" class="{{ set_active(['search/user/list','userManagement','activity/log','activity/login/logout']) ? 'noti-dot' : '' }}">
-                            <i class="la la-user-secret"></i> <span> Controlador de usuario</span> <span class="menu-arrow"></span>
+                            <i class="la la-user-secret"></i> <span> User Controller</span> <span class="menu-arrow"></span>
                         </a>
                         <ul style="{{ request()->is('/*') ? 'display: block;' : 'display: none;' }}">
-                            <li><a class="{{set_active(['search/user/list','userManagement'])}}" href="{{ route('userManagement') }}">Listado de Usuario</a></li>
-                            <li><a class="{{set_active(['activity/log'])}}" href="{{ route('activity/log') }}">Agregar Usuario</a></li>
-
-                            <li><a class="{{set_active(['activity/log'])}}" href="{{ route('activity/log') }}">Registro de actividades</a></li>
-                            <li><a class="{{set_active(['activity/login/logout'])}}" href="{{ route('activity/login/logout') }}">Actividades Usuario</a></li>
+                            <li><a class="{{set_active(['search/user/list','userManagement'])}}" href="{{ route('userManagement') }}">All User</a></li>
+                            <li><a class="{{set_active(['activity/log'])}}" href="{{ route('activity/log') }}">Activity Log</a></li>
+                            <li><a class="{{set_active(['activity/login/logout'])}}" href="{{ route('activity/login/logout') }}">Activity User</a></li>
                         </ul>
                     </li>
                 @endif

@@ -26,7 +26,7 @@
         </div>
     </div>
     <!-- Sidebar -->
-    
+
     <!-- Page Wrapper -->
     <div class="page-wrapper">
         <!-- Page Content -->
@@ -37,7 +37,7 @@
                     <div class="page-header">
                         <div class="row">
                             <div class="col-sm-12">
-                                <h3 class="page-title">Company Settings</h3>
+                                <h3 class="page-title">Configuración de la empresa</h3>
                             </div>
                         </div>
                     </div>
@@ -46,13 +46,13 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label>Company Name <span class="text-danger">*</span></label>
+                                    <label>Nombre de la Compañia: <span class="text-danger">*</span></label>
                                     <input class="form-control" type="text" value="Soeng Souy">
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label>Contact Person</label>
+                                    <label>Persona de contacto:</label>
                                     <input class="form-control " value="Soeng Souy" type="text">
                                 </div>
                             </div>
@@ -60,13 +60,13 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <label>Address</label>
+                                    <label>Dirección</label>
                                     <input class="form-control " value="3864 Bld 110 PP, CA, 91403" type="text">
                                 </div>
                             </div>
                             <div class="col-sm-6 col-md-6 col-lg-3">
                                 <div class="form-group">
-                                    <label>Country</label>
+                                    <label>Pais:</label>
                                     <select class="form-control select">
                                         <option>KHMER</option>
                                         <option>USA</option>
@@ -76,13 +76,13 @@
                             </div>
                             <div class="col-sm-6 col-md-6 col-lg-3">
                                 <div class="form-group">
-                                    <label>City</label>
+                                    <label>Departamento:</label>
                                     <input class="form-control" value="Phnom Penh" type="text">
                                 </div>
                             </div>
                             <div class="col-sm-6 col-md-6 col-lg-3">
                                 <div class="form-group">
-                                    <label>State/Province</label>
+                                    <label>Municipio:</label>
                                     <select class="form-control select">
                                         <option>Phnom Penh</option>
                                         <option>Pursat</option>
@@ -93,7 +93,7 @@
                             </div>
                             <div class="col-sm-6 col-md-6 col-lg-3">
                                 <div class="form-group">
-                                    <label>Postal Code</label>
+                                    <label>Codigo Postal</label>
                                     <input class="form-control" value="12000" type="text">
                                 </div>
                             </div>
@@ -101,13 +101,13 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label>Email</label>
+                                    <label>Correo Electronico:</label>
                                     <input class="form-control" value="example@gmail.com" type="email">
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label>Phone Number</label>
+                                    <label>Número Telefonico:</label>
                                     <input class="form-control" value="855-978-7102" type="text">
                                 </div>
                             </div>
@@ -115,13 +115,13 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label>Mobile Number</label>
+                                    <label>Numero Celular:</label>
                                     <input class="form-control" value="855-635-5579" type="text">
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label>Fax</label>
+                                    <label>Fax:</label>
                                     <input class="form-control" value="818-978-7102" type="text">
                                 </div>
                             </div>
@@ -129,7 +129,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <label>Website Url</label>
+                                    <label>Sitio Web:</label>
                                     <input class="form-control" value="https://www.soengsouy.com" type="text">
                                 </div>
                             </div>

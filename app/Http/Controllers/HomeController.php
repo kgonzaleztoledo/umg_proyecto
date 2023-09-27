@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
+use Jenssegers\Date\Date;
 use Carbon\Carbon;
 use PDF;
 use App\Models\User;
@@ -17,6 +18,8 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+
+
     }
 
     /**
@@ -27,13 +30,17 @@ class HomeController extends Controller
     // main dashboard
     public function index()
     {
-        return view('dashboard.dashboard');
+        //Fecha aqui se declara la fecha del sistema
+        $dt        = Carbon::now();
+        $todayDate = $dt->formatLocalized("%A %d %B %Y");
+        return view('dashboard.dashboard',compact('todayDate'));
     }
-    // employee dashboard
+    // Vista del empleado
     public function emDashboard()
     {
+        //Fecha aqui se declara la fecha del sistema
         $dt        = Carbon::now();
-        $todayDate = $dt->toDayDateTimeString();
+        $todayDate = $dt->formatLocalized("%A %d %B %Y");
         return view('dashboard.emdashboard',compact('todayDate'));
     }
 

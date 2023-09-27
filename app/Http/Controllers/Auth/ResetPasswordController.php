@@ -29,12 +29,12 @@ class ResetPasswordController extends Controller
             return back();
         }
         else{
-            
+
             $user = User::where('email', $request->email)->update(['password' => Hash::make($request->password)]);
             DB::table('password_resets')->where(['email'=> $request->email])->delete();
-            Toastr::success('Your password has been changed! :)','Success');
+            Toastr::success('Tu contraseña ha sido cambiada! :)','Exitosamente');
             return redirect('/login');
         }
-       
+
     }
 }

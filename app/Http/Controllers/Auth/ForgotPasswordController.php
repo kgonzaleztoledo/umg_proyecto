@@ -31,10 +31,10 @@ class ForgotPasswordController extends Controller
 
         Mail::send('auth.verify',['token' => $token], function($message) use ($request) {
                   $message->from($request->email);
-                  $message->to('your email');
-                  $message->subject('Reset Password Notification');
+                  $message->to('kennethandoni14@gmail.com');
+                  $message->subject('Notificación de restablecimiento de contraseña');
                });
-        Toastr::success('We have e-mailed your password reset link! :)','Success');
+        Toastr::success('¡Le hemos enviado por correo electrónico el enlace para restablecer su contraseña! :)','Éxito');
         return back();
     }
 }

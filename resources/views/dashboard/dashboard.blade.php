@@ -7,9 +7,10 @@
             <div class="page-header">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h3 class="page-title">Welcome {{ Session::get('name') }}!</h3>
+                        <h3 class="page-title">Bienvenido {{ Session::get('name') }}!</h3>
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item active">Dashboard</li>
+                            <li class="breadcrumb-item active">Dashboard </li>
+                            <li class="breadcrumb-item active">Fecha de Hoy: {{ $todayDate }}</li>
                         </ul>
                     </div>
                 </div>
@@ -405,7 +406,7 @@
                                                         </a>
                                                         <a class="dropdown-item" href="javascript:void(0)">
                                                             <i class="fa fa-trash-o m-r-5"></i> Delete
-                                                        </a> 
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </td>
@@ -534,7 +535,7 @@
                                                     <div class="dropdown-menu dropdown-menu-right">
                                                         <a class="dropdown-item" href="#">
                                                             <i class="fa fa-dot-circle-o text-success"></i> Active
-                                                        </a> 
+                                                        </a>
                                                         <a class="dropdown-item" href="#">
                                                             <i class="fa fa-dot-circle-o text-danger"></i> Inactive
                                                         </a>
@@ -582,7 +583,7 @@
                                                 <h2>
                                                     <a href="project-view.html">Office Management</a>
                                                 </h2>
-                                                <small class="block text-ellipsis">   
+                                                <small class="block text-ellipsis">
                                                     <span>1</span> <span class="text-muted">open tasks, </span>
                                                     <span>9</span> <span class="text-muted">tasks completed</span>
                                                 </small>
@@ -610,7 +611,7 @@
                                             <td>
                                                 <h2>
                                                     <a href="project-view.html">Project Management</a>
-                                                </h2> 
+                                                </h2>
                                                 <small class="block text-ellipsis">
                                                     <span>2</span> <span class="text-muted">open tasks, </span>
                                                     <span>5</span> <span class="text-muted">tasks completed</span>
@@ -702,7 +703,7 @@
                                                     <span>7</span> <span class="text-muted">open tasks, </span>
                                                     <span>14</span> <span class="text-muted">tasks completed</span>
                                                 </small>
-                                            
+
                                             </td>
                                             <td>
                                                 <div class="progress progress-xs progress-striped">

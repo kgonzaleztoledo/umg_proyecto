@@ -1,14 +1,14 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
         <meta name="description" content="soengsouy - Bootstrap Admin Template">
 		<meta name="keywords" content="admin, estimates, bootstrap, business, corporate, creative, management, minimal, modern, accounts, invoice, html5, responsive, CRM, Projects">
-        <meta name="author" content="soengsouy">
+        <meta name="Autor" content="Kenneth Andoni González Toledo">
         <meta name="robots" content="noindex, nofollow">
-        <title>Login HRMS</title>
+        <title>Sistema de RRHHE</title>
 		<!-- Favicon -->
         <link rel="shortcut icon" type="image/x-icon" href="{{ URL::to('assets/img/favicon.png') }}">
 		<!-- Bootstrap CSS -->
@@ -30,7 +30,7 @@
         <script src="{{ URL::to('assets/js/toastr.min.js') }}"></script>
     </head>
     <body class="account-page error-page">
-        <style>    
+        <style>
             .invalid-feedback{
                 font-size: 14px;
             }

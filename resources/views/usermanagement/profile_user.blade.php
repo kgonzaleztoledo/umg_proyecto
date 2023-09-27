@@ -7,10 +7,10 @@
             <div class="page-header">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h3 class="page-title">Profile</h3>
+                        <h3 class="page-title">Perfil</h3>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('home') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Profile</li>
+                            <li class="breadcrumb-item active">Perfil</li>
                         </ul>
                     </div>
                 </div>
@@ -37,15 +37,15 @@
                                                 <h3 class="user-name m-t-0 mb-0">{{ Session::get('name') }}</h3>
                                                 <h6 class="text-muted">{{ Session::get('department') }}</h6>
                                                 <small class="text-muted">{{ Session::get('position') }}</small>
-                                                <div class="staff-id">User ID : {{ Session::get('user_id') }}</div>
-                                                <div class="small doj text-muted">Date of Join : {{ Session::get('join_date') }}</div>
-                                                <div class="staff-msg"><a class="btn btn-custom" href="chat.html">Send Message</a></div>
+                                                <div class="staff-id">ID de Usuario : {{ Session::get('user_id') }}</div>
+                                                <div class="small doj text-muted">Fecha de incorporación : {{ Session::get('join_date') }}</div>
+                                                <div class="staff-msg"><a class="btn btn-custom" href="#">Send Message</a></div>
                                             </div>
                                         </div>
                                         <div class="col-md-7">
                                             <ul class="personal-info">
                                                 <li>
-                                                    <div class="title">Phone:</div>
+                                                    <div class="title">Teléfono:</div>
                                                     <div class="text"><a href="">{{ Session::get('phone_number') }}</a></div>
                                                 </li>
                                                 <li>
@@ -55,7 +55,7 @@
                                                 @if(!empty($information))
                                                     <li>
                                                         @if(Auth::user()->user_id == $information->user_id)
-                                                        <div class="title">Birthday:</div>
+                                                        <div class="title">Fecha de Nacimiento:</div>
                                                         <div class="text">{{date('d F, Y',strtotime($information->birth_date)) }}</div>
                                                         @else
                                                         <div class="title">Birthday:</div>
@@ -119,7 +119,7 @@
                                                             </a>
                                                         </div>
                                                     </li>
-                                                @endif    
+                                                @endif
                                             </ul>
                                         </div>
                                     </div>
@@ -130,7 +130,7 @@
                     </div>
                 </div>
             </div>
-					
+
             <div class="card tab-box">
                 <div class="row user-tabs">
                     <div class="col-lg-12 col-md-12 col-sm-12 line-tabs">
@@ -142,7 +142,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="tab-content">
                 <!-- Profile Info Tab -->
                 <div id="emp_profile" class="pro-overview tab-pane fade show active">
@@ -411,7 +411,7 @@
                     </div>
                 </div>
                 <!-- /Profile Info Tab -->
-                    
+
                 <!-- Projects Tab -->
                 <div class="tab-pane fade" id="emp_projects">
                     <div class="row">
@@ -477,7 +477,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="col-lg-4 col-sm-6 col-md-4 col-xl-3">
                             <div class="card">
                                 <div class="card-body">
@@ -540,7 +540,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="col-lg-4 col-sm-6 col-md-4 col-xl-3">
                             <div class="card">
                                 <div class="card-body">
@@ -603,7 +603,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="col-lg-4 col-sm-6 col-md-4 col-xl-3">
                             <div class="card">
                                 <div class="card-body">
@@ -669,7 +669,7 @@
                     </div>
                 </div>
                 <!-- /Projects Tab -->
-                
+
                 <!-- Bank Statutory Tab -->
                 <div class="tab-pane fade" id="bank_statutory">
                     <div class="card">
@@ -810,7 +810,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <hr>
                                 <h3 class="card-title"> ESI Information</h3>
                                 <div class="row">
@@ -872,7 +872,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="submit-section">
                                     <button class="btn btn-primary submit-btn" type="submit">Save</button>
                                 </div>
@@ -1111,7 +1111,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Designation <span class="text-danger">*</span></label>
-                                        
+
                                         <select class="select" id="" name="designation">
                                             <option selected disabled>Select Designation</option>
                                             <option value="Web Designer">Web Designer</option>
@@ -1142,7 +1142,7 @@
         </div>
         <!-- /Profile Modal -->
         @endif
-    
+
         @if (!empty($userInformation))
         <!-- Personal Info Modal -->
         <div id="personal_info_modal" class="modal custom-modal fade" role="dialog">
@@ -1307,7 +1307,7 @@
         </div>
         <!-- /Personal Info Modal -->
         @endif
-        
+
         <!-- Family Info Modal -->
         <div id="family_info_modal" class="modal custom-modal fade" role="dialog">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -1352,7 +1352,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="card">
                                     <div class="card-body">
                                         <h3 class="card-title">Education Informations <a href="javascript:void(0);" class="delete-icon"><i class="fa fa-trash-o"></i></a></h3>
@@ -1397,7 +1397,7 @@
             </div>
         </div>
         <!-- /Family Info Modal -->
-        
+
         <!-- Emergency Contact Modal -->
         <div id="emergency_contact_modal" class="modal custom-modal fade" role="dialog">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -1441,7 +1441,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="card">
                                 <div class="card-body">
                                     <h3 class="card-title">Primary Contact</h3>
@@ -1482,7 +1482,7 @@
             </div>
         </div>
         <!-- /Emergency Contact Modal -->
-        
+
         <!-- Education Modal -->
         <div id="education_info" class="modal custom-modal fade" role="dialog">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -1543,7 +1543,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="card">
                                     <div class="card-body">
                                         <h3 class="card-title">Education Informations <a href="javascript:void(0);" class="delete-icon"><i class="fa fa-trash-o"></i></a></h3>
@@ -1604,7 +1604,7 @@
             </div>
         </div>
         <!-- /Education Modal -->
-        
+
         <!-- Experience Modal -->
         <div id="experience_info" class="modal custom-modal fade" role="dialog">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -1659,7 +1659,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="card">
                                     <div class="card-body">
                                         <h3 class="card-title">Experience Informations <a href="javascript:void(0);" class="delete-icon"><i class="fa fa-trash-o"></i></a></h3>
