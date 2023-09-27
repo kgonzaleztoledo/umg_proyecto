@@ -17,6 +17,19 @@
                         <li><a class="{{set_active(['em/dashboard'])}}" href="#">Panel de empleados</a></li>
                     </ul>
                 </li>
+
+                <li class="menu-title"> <span>Item's</span> </li>
+                <li class="{{set_active(['employee/profile/*'])}} submenu">
+                    <a href="#"><i class="la la-user"></i>
+                        <span> Catalogos </span> <span class="menu-arrow"></span>
+                    </a>
+                    <ul style="display: none;">
+                        <li><a class="{{set_active(['employee/profile/*'])}}" href="{{ route('form/empresas/page') }}"> Empresas</a></li>
+                    </ul>
+                </li>
+
+
+
                 @if (Auth::user()->role_name=='Admin')
                     <li class="menu-title"> <span>Authentication</span> </li>
                     <li class="{{set_active(['search/user/list','userManagement','activity/log','activity/login/logout'])}} submenu">

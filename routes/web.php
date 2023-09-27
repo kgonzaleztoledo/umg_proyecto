@@ -22,6 +22,8 @@ use App\Http\Controllers\TrainersController;
 use App\Http\Controllers\TrainingTypeController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\PersonalInformationController;
+use App\Http\Controllers\EmpresaController;
+
 
 
 /*
@@ -67,9 +69,34 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('em/dashboard', 'emDashboard')->name('em/dashboard');
 });
 
+
+// -----------------------------CRUD EMPRESA----------------------------------------//
+Route::controller(EmpresaController::class)->group(function () {
+Route::get('form/empresas/page', 'index')->middleware('auth')->name('form/empresas/page'); // ruta index
+Route::post('form/empresas/save', 'saveRecordDepartment')->middleware('auth')->name('form/empresas/save');  // ruta de Guardar
+
+Route::post('search/empresas/list', 'searchEmpresa')->name('search/empresas/list');
+Route::post('form/empresa/update', 'updateRecordDepartment')->middleware('auth')->name('form/empresa/update'); //  ruta de Actualizar
+Route::post('form/empresa/delete', 'deleteRecordDepartment')->middleware('auth')->name('form/empresa/delete');  // ruta para eliminar
+
+
+Route::post('user/add/save', 'addNewUserSave')->name('user/add/save');
+Route::post('search/user/list', 'searchUser')->name('search/user/list');
+
+//Route::get('activity/log', 'activityLog')->middleware('auth')->name('activity/log');
+//Route::get('activity/login/logout', 'activityLogInLogOut')->middleware('auth')->name('activity/login/logout');
+
+});
+
+
+
+
+
 // -----------------------------settings----------------------------------------//
 Route::controller(SettingController::class)->group(function () {
     Route::get('company/settings/page', 'companySettings')->middleware('auth')->name('company/settings/page');
+
+//	Route::resource('categories', 'CategoriaController');
     Route::get('roles/permissions/page', 'rolesPermissions')->middleware('auth')->name('roles/permissions/page');
     Route::post('roles/permissions/save', 'addRecord')->middleware('auth')->name('roles/permissions/save');
     Route::post('roles/permissions/update', 'editRolesPermissions')->middleware('auth')->name('roles/permissions/update');
