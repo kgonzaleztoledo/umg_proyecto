@@ -7,7 +7,7 @@
             <div class="page-header">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h3 class="page-title">Bienvenido {{ Session::get('name') }}!</h3>
+                        <h3 class="page-title">Bienvenido {{ Session::get('nombre') }}!</h3>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item active">Dashboard </li>
                             <li class="breadcrumb-item active">Fecha de Hoy: {{ $todayDate }}</li>
@@ -37,18 +37,18 @@
                 </div>
                 <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                     <div class="card dash-widget">
-                        <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-diamond"></i></span>
+                        <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-user"></i></span>
                             <div class="dash-widget-info">
-                                <h3>37</h3> <span>Tasks</span>
+                                <h3>{{$users}}</h3> <span>Usuarios Registrados</span>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                     <div class="card dash-widget">
-                        <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-user"></i></span>
+                        <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-address-card"></i></span>
                             <div class="dash-widget-info">
-                                <h3>218</h3> <span>Employees</span>
+                                <h3>{{$empleados}}</h3> <span>Empleados Registrados</span>
                             </div>
                         </div>
                     </div>
@@ -254,6 +254,106 @@
                 <div class="col-md-6 d-flex">
                     <div class="card card-table flex-fill">
                         <div class="card-header">
+                            <h3 class="card-title mb-0">Ultimos 5 Usuarios Registrados</h3> </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-nowrap custom-table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>ID Usuario</th>
+                                            <th>Usuario Nombre</th>
+
+                                            <th>Fecha de Registro</th>
+                                            <th>Estado</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($user_ultimos as $item )
+                                        <tr>
+                                            <td class="id">{{ $item->user_id }}</td>
+                                            <td class="sku_sucursal">{{ $item->nombre  }}</td>
+
+
+
+                                            <td class="puesto">{{ $item->fecha_ingreso }}</td>
+                                            @if ($item->estado=='1')
+                                            <td class="estado">Activo</td>
+                                            @else
+
+                                            <td class="estado">Inactivo</td>
+                                            @endif
+
+
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <a href="{{ route('userManagement') }}">Ver todos los Usuarios</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 d-flex">
+                    <div class="card card-table flex-fill">
+                        <div class="card-header">
+                            <h3 class="card-title mb-0">Payments</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table custom-table table-nowrap mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Invoice ID</th>
+                                            <th>Client</th>
+                                            <th>Payment Type</th>
+                                            <th>Paid Date</th>
+                                            <th>Paid Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><a href="invoice-view.html">#INV-0001</a></td>
+                                            <td>
+                                                <h2><a href="#">Global Technologies</a></h2> </td>
+                                            <td>Paypal</td>
+                                            <td>11 Mar 2019</td>
+                                            <td>$380</td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="invoice-view.html">#INV-0002</a></td>
+                                            <td>
+                                                <h2><a href="#">Delta Infotech</a></h2> </td>
+                                            <td>Paypal</td>
+                                            <td>8 Feb 2019</td>
+                                            <td>$500</td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="invoice-view.html">#INV-0003</a></td>
+                                            <td>
+                                                <h2><a href="#">Cream Inc</a></h2> </td>
+                                            <td>Paypal</td>
+                                            <td>23 Jan 2019</td>
+                                            <td>$60</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <a href="{{ route('userManagement') }}">Ver todos los p</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+   <!-- /Statistics Widget -->
+            <div class="row">
+                <div class="col-md-6 d-flex">
+                    <div class="card card-table flex-fill">
+                        <div class="card-header">
                             <h3 class="card-title mb-0">Invoices</h3> </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -359,6 +459,8 @@
                     </div>
                 </div>
             </div>
+
+
             <div class="row">
                 <div class="col-md-6 d-flex">
                     <div class="card card-table flex-fill">

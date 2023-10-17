@@ -22,7 +22,7 @@
                 <div class="account-box">
                     <div class="account-wrapper">
                         <h3 class="account-title">Login</h3>
-                        <p class="account-subtitle">Sistema de RRHH </p>
+                        <p class="account-subtitle">Sistema de Gestión de Nomina  </p>
 
                 <!-- Formulario de cuenta -->
                         <form method="POST" action="{{ route('login') }}">

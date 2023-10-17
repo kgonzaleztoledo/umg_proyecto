@@ -16,6 +16,7 @@
 
                     {{ __('You are logged in!') }}
                 </div>
+             asdasd   @livewire('homecomponent')
             </div>
         </div>
     </div>

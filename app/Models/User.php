@@ -17,20 +17,25 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+
+    protected $table = "users";
     protected $fillable = [
-        'name',
+        'empresa_id',
+        'nombre',
         'user_id',
+        'puesto',
+        'departamento',
         'email',
-        'join_date',
-        'phone_number',
-        'status',
-        'role_name',
-        'email',
+        'fecha_ingreso',
         'role_name',
         'avatar',
-        'position',
-        'department',
         'password',
+        'estado',
+
+
+
+
     ];
 
     /**
@@ -51,4 +56,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function empresa(){
+        return $this->belongsTo('App\Models\Empresa');
+    }
+
 }

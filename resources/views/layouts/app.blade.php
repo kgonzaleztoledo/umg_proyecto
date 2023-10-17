@@ -1,14 +1,13 @@
-
 <!DOCTYPE html>
 <html lang="es">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-        <meta name="description" content="soengsouy - Bootstrap Admin Template">
+        <meta name="description" content="Sistema de Gestión de Nomina ">
 		<meta name="keywords" content="admin, estimates, bootstrap, business, corporate, creative, management, minimal, modern, accounts, invoice, html5, responsive, CRM, Projects">
         <meta name="Autor" content="Kenneth Andoni González Toledo">
         <meta name="robots" content="noindex, nofollow">
-        <title>Sistema de RRHHE</title>
+        <title>Sistema de Gestión de Nomina </title>
 		<!-- Favicon -->
         <link rel="shortcut icon" type="image/x-icon" href="{{ URL::to('assets/img/favicon.png') }}">
 		<!-- Bootstrap CSS -->
@@ -28,6 +27,7 @@
         <link rel="stylesheet" href="{{ URL::to('assets/css/toastr.min.css') }}">
         <script src="{{ URL::to('assets/js/toastr_jquery.min.js') }}"></script>
         <script src="{{ URL::to('assets/js/toastr.min.js') }}"></script>
+        @livewireStyles
     </head>
     <body class="account-page error-page">
         <style>
@@ -51,7 +51,9 @@
 		<script src="{{ URL::to('assets/js/moment.min.js') }}"></script>
 		<script src="{{ URL::to('assets/js/bootstrap-datetimepicker.min.js') }}"></script>
 		<!-- Custom JS -->
-		<script src="{{ URL::to('assets/js/app.js') }}"></script>
+
+
+        @livewireScripts
         @yield('script')
     </body>
 </html>

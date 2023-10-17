@@ -8,13 +8,9 @@ use Jenssegers\Date\Date;
 use Carbon\Carbon;
 use PDF;
 use App\Models\User;
+use App\Models\Employee;
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('auth');
@@ -30,11 +26,18 @@ class HomeController extends Controller
     // main dashboard
     public function index()
     {
+        $empleados = Employee::count();
+        $users = User::count();
+        $user_ultimos = User::latest()
+                        ->take(3)
+                         ->get();
         //Fecha aqui se declara la fecha del sistema
         $dt        = Carbon::now();
         $todayDate = $dt->formatLocalized("%A %d %B %Y");
-        return view('dashboard.dashboard',compact('todayDate'));
+        return view('dashboard.dashboard',compact('todayDate', 'empleados','users','user_ultimos'));
     }
+
+
     // Vista del empleado
     public function emDashboard()
     {

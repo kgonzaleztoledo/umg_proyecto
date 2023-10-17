@@ -7,9 +7,11 @@ use Brian2694\Toastr\Facades\Toastr;
 use DB;
 use App\Models\User;
 use App\Models\Employee;
-use App\Models\Form;
-use App\Models\ProfileInformation;
-use App\Models\PersonalInformation;
+use App\Models\Puesto as Puestos;
+
+use App\Models\PersonalDepartamento as PersonalDepartamentos;
+use App\Models\PerfilInformacion;
+use App\Models\PersonalInformacion;
 use App\Rules\MatchOldPassword;
 use Carbon\Carbon;
 use Session;
@@ -20,14 +22,23 @@ class UserManagementController extends Controller
 {
     public function index()
     {
-        if (Auth::user()->role_name=='Admin')
+        if (Auth::user()->nombre_rol=='Super Admin')
+
         {
-            $result      = DB::table('users')->get();
-            $role_name   = DB::table('role_type_users')->get();
-            $position    = DB::table('position_types')->get();
-            $department  = DB::table('departments')->get();
-            $status_user = DB::table('user_types')->get();
-            return view('usermanagement.user_control',compact('result','role_name','position','department','status_user'));
+            $sku_empresa =Auth::user()->empresa_id;
+            $result = DB::table('empresas')
+            ->leftJoin('users','users.empresa_id','empresas.id')
+            ->select('empresas.nombre as sucursal' ,'users.*')
+            ->get();
+
+             //   dd($result);
+
+            $roles   = DB::table('rol_usuarios')->get();
+            $empresas   = DB::table('empresas')->get();
+            $puestos    = DB::table('puestos')->get();
+            $departamentos  = DB::table('personal_departamentos')->get();
+         //   $status_user = DB::table('user_types')->get();
+            return view('usermanagement.user_control',compact('result','roles','puestos','departamentos','empresas'));
         }
         else
         {
@@ -36,69 +47,81 @@ class UserManagementController extends Controller
 
     }
     // search user
-    public function searchUser(Request $request)
+    public function buscarUser(Request $request)
     {
-        if (Auth::user()->role_name=='Admin')
+    //dd($request);
+        if (Auth::user()->nombre_rol=='Super Admin' || Auth::user()->nombre_rol=='Admin')
         {
             $users      = DB::table('users')->get();
-            $result     = DB::table('users')->get();
-            $role_name  = DB::table('role_type_users')->get();
-            $position   = DB::table('position_types')->get();
-            $department = DB::table('departments')->get();
-            $status_user = DB::table('user_types')->get();
+            $result     = DB::table('empresas')
+            ->leftJoin('users','users.empresa_id','empresas.id')
+            ->select('empresas.nombre as sucursal' ,'users.*')
+            ->get();
+
+
+            $roles  = DB::table('rol_usuarios')->get();
+            $puestos   = DB::table('puestos')->get();
+            $empresas   = DB::table('empresas')->get();
+
+            $departamentos = DB::table('personal_departamentos')->get();
+          //  $status_user = DB::table('user_types')->get();
+
 
             // search by name
-            if($request->name)
+            if($request->nombre)
             {
-                $result = User::where('name','LIKE','%'.$request->name.'%')->get();
+                $result = User::where('nombre','LIKE','%'.$request->nombre.'%')->get();
             }
 
             // search by role name
-            if($request->role_name)
+            if($request->nombre_rol)
             {
-                $result = User::where('role_name','LIKE','%'.$request->role_name.'%')->get();
+                $result = User::where('nombre_rol','LIKE','%'.$request->nombre_rol.'%')->get();
             }
 
             // search by status
-            if($request->status)
-            {
-                $result = User::where('status','LIKE','%'.$request->status.'%')->get();
+            if($request->estado)
+            {   $i = $request->estado;
+                dd($i);
+                $result = User::where('estado','LIKE','%'.$i.'%')->get();
             }
 
             // search by name and role name
-            if($request->name && $request->role_name)
+            if($request->nombre && $request->nombre_rol)
             {
-                $result = User::where('name','LIKE','%'.$request->name.'%')
-                                ->where('role_name','LIKE','%'.$request->role_name.'%')
+                $result = User::where('nombre','LIKE','%'.$request->nombre.'%')
+                                ->where('nombre_rol','LIKE','%'.$request->nombre_rol.'%')
                                 ->get();
             }
 
             // search by role name and status
-            if($request->role_name && $request->status)
+            if($request->nombre_rol && $request->estado)
             {
-                $result = User::where('role_name','LIKE','%'.$request->role_name.'%')
-                                ->where('status','LIKE','%'.$request->status.'%')
+                $result = User::where('nombre_rol','LIKE','%'.$request->nombre_rol.'%')
+                                ->where('estado','LIKE','%'.$request->estado.'%')
                                 ->get();
             }
 
             // search by name and status
-            if($request->name && $request->status)
+            if($request->nombre && $request->estado)
             {
-                $result = User::where('name','LIKE','%'.$request->name.'%')
-                                ->where('status','LIKE','%'.$request->status.'%')
+                $result = User::where('nombre','LIKE','%'.$request->nombre.'%')
+                                ->where('estado','LIKE','%'.$request->estado.'%')
                                 ->get();
             }
 
             // search by name and role name and status
-            if($request->name && $request->role_name && $request->status)
+            if($request->nombre && $request->nombre_rol && $request->estado)
             {
-                $result = User::where('name','LIKE','%'.$request->name.'%')
-                                ->where('role_name','LIKE','%'.$request->role_name.'%')
-                                ->where('status','LIKE','%'.$request->status.'%')
+                $result = User::where('nombre','LIKE','%'.$request->nombre.'%')
+                                ->where('nombre_rol','LIKE','%'.$request->nombre_rol.'%')
+                                ->where('estado','LIKE','%'.$request->estado.'%')
                                 ->get();
+
+
             }
 
-            return view('usermanagement.user_control',compact('users','role_name','position','department','status_user','result'));
+            return view('usermanagement.user_control',compact('users','roles','empresas','puestos','departamentos','result'));
         }
         else
         {
@@ -121,45 +144,46 @@ class UserManagementController extends Controller
     }
 
     //usuario de perfil
-    public function profile()
+    public function perfil()
     {
         $profile = Session::get('user_id'); // obtener sesión user_id
-        $userInformation = PersonalInformation::where('user_id',$profile)->first();// informacion del usuario
+        $userInformation = PersonalInformacion::where('user_id',$profile)->first();// informacion del usuario
        // dd($userInformation);
 
         $user = DB::table('users')->get();
-       // dd($user);
-        $employees = DB::table('profile_information')->where('user_id',$profile)->first();
+        $employees = DB::table('perfil_informacion')->where('user_id',$profile)->first();
 
 
         if(empty($employees))
         {
-            $information = DB::table('profile_information')->where('user_id',$profile)->first();
+            $information = DB::table('perfil_informacion')->where('user_id',$profile)->first();
            // dd($information);
-            return view('usermanagement.profile_user',compact('information','user','userInformation'));
+            return view('usermanagement.perfil_usuario',compact('information','user','userInformation'));
 
         } else {
             $user_id = $employees->user_id;
             if($user_id == $profile)
             {
-                $information = DB::table('profile_information')->where('user_id',$profile)->first();
-                return view('usermanagement.profile_user',compact('information','user','userInformation'));
+                $information = DB::table('perfil_informacion')->where('user_id',$profile)->first();
+                return view('usermanagement.perfil_usuario',compact('information','user','userInformation'));
             } else {
-                $information = ProfileInformation::all();
-                return view('usermanagement.profile_user',compact('information','user','userInformation'));
+                $information = PerfilInformacion::all();
+                return view('usermanagement.perfil_usuario',compact('information','user','userInformation'));
             }
         }
     }
 
-    // save profile information
-    public function profileInformation(Request $request)
+    // Grabar Perfil de informacion Usuario
+    public function perfilInformacion(Request $request)
     {
+
+   $img = $request->hidden_image;
         try {
             if(!empty($request->images))
             {
                 $image_name = $request->hidden_image;
                 $image = $request->file('images');
-                if($image_name =='photo_defaults.jpg')
+                if($image_name =='img_n.jpg')
                 {
                     if($image != '')
                     {
@@ -171,40 +195,43 @@ class UserManagementController extends Controller
                     {
                         $image_name = rand() . '.' . $image->getClientOriginalExtension();
                         $image->move(public_path('/assets/images/'), $image_name);
-                        unlink('assets/images/'.Auth::user()->avatar);
+
+                       unlink('assets/images/'.$img);
                     }
                 }
+
+
                 $update = [
                     'user_id' => $request->user_id,
-                    'name'   => $request->name,
+                    'nombre'   => $request->name,
                     'avatar' => $image_name,
                 ];
                 User::where('user_id',$request->user_id)->update($update);
             }
 
-            $information = ProfileInformation::updateOrCreate(['user_id' => $request->user_id]);
-            $information->name         = $request->name;
+            $information = PerfilInformacion::updateOrCreate(['user_id' => $request->user_id]);
+            $information->nombre_completo         = $request->name;
             $information->user_id      = $request->user_id;
             $information->email        = $request->email;
-            $information->birth_date   = $request->birthDate;
-            $information->gender       = $request->gender;
-            $information->address      = $request->address;
-            $information->state        = $request->state;
-            $information->country      = $request->country;
-            $information->pin_code     = $request->pin_code;
-            $information->phone_number = $request->phone_number;
-            $information->department   = $request->department;
-            $information->designation  = $request->designation;
-            $information->reports_to   = $request->reports_to;
+            $information->fecha_nacimiento   = $request->birthDate;
+            $information->genero       = $request->gender;
+            $information->direccion      = $request->address;
+            $information->estado        = $request->state;
+            $information->ciudad      = $request->country;
+            $information->codigo_postal    = $request->pin_code;
+            $information->telefono_movil = $request->phone_number;
+            $information->departamento   = $request->department;
+            $information->puesto_designado  = $request->designation;
+            $information->jefe_inmediato   = $request->reports_to;
             //dd($information);
             $information->save();
 
             DB::commit();
-            Toastr::success('Profile Information successfully :)','Success');
+            Toastr::success('Información de perfil exitosamente :)','Éxito');
             return redirect()->back();
         }catch(\Exception $e){
             DB::rollback();
-            Toastr::error('Add Profile Information fail :)','Error');
+            Toastr::error('Error al agregar información de perfil :)','Error');
             return redirect()->back();
         }
     }
@@ -212,67 +239,98 @@ class UserManagementController extends Controller
     // save new user
     public function addNewUserSave(Request $request)
     {
+
+      // dd($request);
         $request->validate([
-            'name'      => 'required|string|max:255',
+            'nombre'      => 'required|string|min:3|max:150',
             'email'     => 'required|string|email|max:255|unique:users',
-            'phone'     => 'required|min:11|numeric',
-            'role_name' => 'required|string|max:255',
-            'position'  => 'required|string|max:255',
-            'department'=> 'required|string|max:255',
-            'status'    => 'required|string|max:255',
+
+            'nombre_rol' => 'required|string|max:255',
+            'puesto'  => 'required|string|max:255',
+            'departamento'=> 'required|string|max:255',
+            'estado'    => 'required|string|max:255',
             'image'     => 'required|image',
+
             'password'  => 'required|string|min:8|confirmed',
             'password_confirmation' => 'required',
         ]);
+
+
         DB::beginTransaction();
         try{
+
             $dt       = Carbon::now();
             $todayDate = $dt->toDayDateTimeString();
 
-            $image = time().'.'.$request->image->extension();
-            $request->image->move(public_path('assets/images'), $image);
+
+            $image_name = $request->hidden_image;
+            $image = $request->file('images');
+            if($image_name =='img_n.jpg')
+            {
+                if($image != '')
+                {
+                    $image_name = rand() . '.' . $image->getClientOriginalExtension();
+                    $image->move(public_path('/assets/images/'), $image_name);
+                }
+            }
+            else{
+
+                if($image != '')
+                {
+                    unlink('assets/images/'.$image_name);
+                    $image_name = rand() . '.' . $image->getClientOriginalExtension();
+                    $image->move(public_path('/assets/images/'), $image_name);
+                }
+            }
+
+
+
+
+
 
             $user = new User;
-            $user->name         = $request->name;
+            $user->nombre         = $request->nombre;
             $user->email        = $request->email;
-            $user->join_date    = $todayDate;
-            $user->phone_number = $request->phone;
-            $user->role_name    = $request->role_name;
-            $user->position     = $request->position;
-            $user->department   = $request->department;
-            $user->status       = $request->status;
-            $user->avatar       = $image;
+            $user->fecha_ingreso    = $todayDate;
+
+            $user->nombre_rol    = $request->nombre_rol;
+            $user->puesto     = $request->puesto;
+            $user->departamento   = $request->departamento;
+            $user->estado       = $request->estado;
+            $user->empresa_id       = $request->empresa;
+            $user->avatar       = $image_name;
             $user->password     = Hash::make($request->password);
             $user->save();
             DB::commit();
-            Toastr::success('Create new account successfully :)','Success');
+            Toastr::success('Nuevo Usuario creado :)','con Éxito');
             return redirect()->route('userManagement');
         }catch(\Exception $e){
             DB::rollback();
-            Toastr::error('User add new account fail :)','Error');
+            Toastr::error('Error al agregar una nueva cuenta por parte del usuario :)','Error');
             return redirect()->back();
         }
     }
 
     // update
-    public function update(Request $request)
+    public function updateUser(Request $request)
     {
         DB::beginTransaction();
         try{
-            $user_id       = $request->user_id;
-            $name         = $request->name;
+
+             $user_id       = $request->user_id;
+            $nombre         = $request->nombre;
             $email        = $request->email;
-            $role_name    = $request->role_name;
-            $position     = $request->position;
-            $phone        = $request->phone;
-            $department   = $request->department;
-            $status       = $request->status;
+            $nombre_rol    = $request->nombre_rol;
+            $puesto     = $request->puesto;
+            $departamento   = $request->departamento;
+            $fecha_ingreso       = $request->fecha_ingreso;
+
 
             $dt       = Carbon::now();
             $todayDate = $dt->toDayDateTimeString();
             $image_name = $request->hidden_image;
             $image = $request->file('images');
-            if($image_name =='photo_defaults.jpg')
+            if($image_name =='img_n.jpg')
             {
                 if($image != '')
                 {
@@ -293,22 +351,38 @@ class UserManagementController extends Controller
             $update = [
 
                 'user_id'       => $user_id,
-                'name'         => $name,
-                'role_name'    => $role_name,
+                'nombre'         => $nombre,
+                'nombre_rol'    => $nombre_rol,
                 'email'        => $email,
-                'position'     => $position,
-                'phone_number' => $phone,
-                'department'   => $department,
-                'status'       => $status,
+                'puesto'     => $puesto,
+                'fecha_ingreso' => $fecha_ingreso,
+                'departamento'   => $departamento,
+              //  'estado'       => $estado,
                 'avatar'       => $image_name,
             ];
 
+
+
+            $e_estado = Auth::user()->estado;
+            $e_nombre = Auth::user()->nombre;
+            $e_email = Auth::user()->email;
+            $e_nombre_rol = Auth::user()->nombre_rol;
+
+
+            if($e_estado==1 ){
+                $estado ='Activo';
+
+            }
+            else{
+                $estado = 'Inactivo';
+            }
+
             $activityLog = [
-                'user_name'    => $name,
-                'email'        => $email,
-                'phone_number' => $phone,
-                'status'       => $status,
-                'role_name'    => $role_name,
+                'user_name'    => $e_nombre,
+                'email'        => $e_email,
+               // 'phone_number' => $phone,
+                'status'       => $estado,
+                'role_name'    => $e_nombre_rol,
                 'modify_user'  => 'Update',
                 'date_time'    => $todayDate,
             ];
@@ -316,12 +390,12 @@ class UserManagementController extends Controller
             DB::table('user_activity_logs')->insert($activityLog);
             User::where('user_id',$request->user_id)->update($update);
             DB::commit();
-            Toastr::success('User updated successfully :)','Success');
+            Toastr::success('Usuario actualizado con :)','Éxito');
             return redirect()->route('userManagement');
 
         }catch(\Exception $e){
             DB::rollback();
-            Toastr::error('User update fail :)','Error');
+            Toastr::error('Error en la actualización del usuario :)','Fallo');
             return redirect()->back();
         }
     }

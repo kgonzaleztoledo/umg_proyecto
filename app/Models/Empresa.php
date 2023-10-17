@@ -13,4 +13,9 @@ class Empresa extends Model
     protected $fillable =[
         'sku_empresa', 'nombre', 'contacto_persona', 'email', 'direccion', 'telefono', 'movil', 'logo', 'sitio_web',
     ];
+
+    public function users()
+    {
+        return $this->hasMany('App\Models\User');
+    }
 }

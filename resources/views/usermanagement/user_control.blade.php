@@ -24,25 +24,30 @@
 			<!-- /Page Header -->
 
             <!-- Search Filter -->
-            <form action="{{ route('search/user/list') }}" method="POST">
+            <form action="{{ route('search/user/lista') }}" method="POST">
                 @csrf
                 <div class="row filter-row">
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus">
-                            <input type="text" class="form-control floating" id="name" name="name">
+                            <input type="text" class="form-control floating" id="nombre" name="nombre">
                             <label class="focus-label">Nombre de usuario</label>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus">
-                            <input type="text" class="form-control floating" id="name" name="role_name">
+                            <input type="text" class="form-control floating" id="nombre_rol" name="nombre_rol">
                             <label class="focus-label">Nombre de rol</label>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus">
-                            <input type="text" class="form-control floating" id="name" name="status">
-                            <label class="focus-label">Estado</label>
+                            <select class="form-control floating" name="estado" id="estado">
+                                <option selected disabled> --Selecciones Tipo Estado --</option>
+
+                                <option value="1">ACTIVO</option>
+                                <option value="0">INACTIVO</option>
+
+                            </select>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
@@ -59,68 +64,76 @@
                         <table class="table table-striped custom-table datatable">
                             <thead>
                                 <tr>
-                                    <th>Nombre</th>
                                     <th>ID Usuario</th>
+                                    <th>Empresa</th>
+                                    <th>Nombre Completo</th>
                                     <th hidden></th>
+                                    <th>Puesto</th>
+                                    <th>Departamento</th>
                                     <th>Correo Electronico</th>
-                                    <th>Posición</th>
-                                    <th>Telefono</th>
                                     <th>Fecha de Ingreso</th>
                                     <th>Rol</th>
                                     <th>Estado</th>
-                                    <th>Departamento</th>
                                     <th class="text-right">Acción</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($result as $key=>$user )
                                 <tr>
+                                    <td class="id">{{ $user->user_id }}</td>
+                                    <td class="sku_sucursal">{{ $user->sucursal  }}</td>
                                     <td>
                                         <span hidden class="image">{{ $user->avatar}}</span>
                                         <h2 class="table-avatar">
-                                            <a href="{{ url('employee/profile/'.$user->user_id) }}" class="avatar"><img src="{{ URL::to('/assets/images/'. $user->avatar) }}" alt="{{ $user->avatar }}"></a>
-                                            <a href="{{ url('employee/profile/'.$user->user_id) }}" class="name">{{ $user->name }}</span></a>
+                                            @if(!empty( $user->avatar))
+                                            <a href="{{ url('empleado/perfil/'.$user->user_id) }}" class="avatar"><img src="{{ URL::to('/assets/images/'. $user->avatar) }}" alt="{{ $user->avatar }}"></a>
+
+                                              @else
+                                              <a href="{{ url('empleado/perfil/'.$user->user_id) }}" class="avatar"><img src="{{asset('/assets/images/img_n.jpg')}}" alt="img_n"></a>
+
+                                             @endif
+                                            <a href="{{ url('empleado/perfil/'.$user->user_id) }}" class="nombre">{{ $user->nombre }}</span></a>
                                         </h2>
                                     </td>
                                     <td hidden class="ids">{{ $user->id }}</td>
-                                    <td class="id">{{ $user->user_id }}</td>
+
+
+                                    <td class="puesto">{{ $user->puesto }}</td>
+                                    <td class="departamento">{{ $user->departamento }}</td>
                                     <td class="email">{{ $user->email }}</td>
-                                    <td class="position">{{ $user->position }}</td>
-                                    <td class="phone_number">{{ $user->phone_number }}</td>
-                                    <td>{{ $user->join_date }}</td>
+                                    <td class="fecha_ingreso">{{ $user->fecha_ingreso}}</td>
+
                                     <td>
-                                        @if ($user->role_name=='Admin')
-                                            <span class="badge bg-inverse-danger role_name">{{ $user->role_name }}</span>
-                                            @elseif ($user->role_name=='Super Admin')
-                                            <span class="badge bg-inverse-warning role_name">{{ $user->role_name }}</span>
-                                            @elseif ($user->role_name=='Normal User')
-                                            <span class="badge bg-inverse-info role_name">{{ $user->role_name }}</span>
-                                            @elseif ($user->role_name=='Client')
-                                            <span class="badge bg-inverse-success role_name">{{ $user->role_name }}</span>
-                                            @elseif ($user->role_name=='Employee')
-                                            <span class="badge bg-inverse-dark role_name">{{ $user->role_name }}</span>
+                                        @if ($user->nombre_rol=='Admin')
+                                            <span class="badge bg-inverse-danger nombre_rol">{{ $user->nombre_rol }}</span>
+                                            @elseif ($user->nombre_rol=='Super Admin')
+                                            <span class="badge bg-inverse-warning nombre_rol">{{ $user->nombre_rol }}</span>
+                                            @elseif ($user->nombre_rol=='Normal User')
+                                            <span class="badge bg-inverse-info nombre_rol">{{ $user->nombre_rol }}</span>
+                                            @elseif ($user->nombre_rol=='Client')
+                                            <span class="badge bg-inverse-success nombre_rol">{{ $user->nombre_rol }}</span>
+                                            @elseif ($user->nombre_rol=='Empleado')
+                                            <span class="badge bg-inverse-dark nombre_rol">{{ $user->nombre_rol }}</span>
                                         @endif
                                     </td>
                                     <td>
                                         <div class="dropdown action-label">
-                                            @if ($user->status=='Active')
+                                            @if ($user->estado=='1')
                                                 <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
                                                     <i class="fa fa-dot-circle-o text-success"></i>
-                                                    <span class="statuss">{{ $user->status }}</span>
+                                                    <span class="statuss">ACTIVO</span>
+
+
                                                 </a>
-                                                @elseif ($user->status=='Inactive')
+                                                @elseif ($user->estado=='0')
                                                 <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
-                                                    <i class="fa fa-dot-circle-o text-info"></i>
-                                                    <span class="statuss">{{ $user->status }}</span>
+                                                    <i class="fa fa-dot-circle-o text-warning "></i>
+                                                    <span class="statuss">INACTIVO</span>
                                                 </a>
-                                                @elseif ($user->status=='Disable')
+
+                                                @elseif ($user->estado=='')
                                                 <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
                                                     <i class="fa fa-dot-circle-o text-danger"></i>
-                                                    <span class="statuss">{{ $user->status }}</span>
-                                                </a>
-                                                @elseif ($user->status=='')
-                                                <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
-                                                    <i class="fa fa-dot-circle-o text-dark"></i>
                                                     <span class="statuss">N/A</span>
                                                 </a>
                                             @endif
@@ -138,13 +151,13 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="department">{{ $user->department }}</td>
+
                                     <td class="text-right">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                             <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item userUpdate" data-toggle="modal" data-id="'.$user->id.'" data-target="#edit_user"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                <a class="dropdown-item userDelete" href="#" data-toggle="modal" ata-id="'.$user->id.'" data-target="#delete_user"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                <a class="dropdown-item userUpdate" data-toggle="modal" data-id="'.$user->id.'" data-target="#edit_user"><i class="fa fa-pencil m-r-5"></i> Editar</a>
+                                                <a class="dropdown-item userDelete" href="#" data-toggle="modal" ata-id="'.$user->id.'" data-target="#delete_user"><i class="fa fa-trash-o m-r-5"></i> Eliminar</a>
                                             </div>
                                         </div>
                                     </td>
@@ -164,7 +177,7 @@
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Add New User</h5>
+                        <h5 class="modal-title"> <i class="bi bi-file-earmark-plus-fill"> Agregar nuevo usuario </i></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -175,83 +188,94 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label>Full Name</label>
-                                        <input class="form-control @error('name') is-invalid @enderror" type="text" id="" name="name" value="{{ old('name') }}" placeholder="Enter Name">
+                                        <label>Nombre Completo:</label>
+                                        <input class="form-control @error('nombre') is-invalid @enderror" type="text" id="" name="nombre" value="{{ old('nombre') }}" placeholder="Ingrese nombre" required>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
-                                    <label>Emaill Address</label>
-                                    <input class="form-control" type="email" id="" name="email" placeholder="Enter Email">
+                                    <label>Email:</label>
+                                    <input class="form-control @error('email') is-invalid @enderror"  type="email" id="" name="email"value="{{ old('email') }}" placeholder="Ingrese Email" required>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <label>Role Name</label>
-                                    <select class="select" name="role_name" id="role_name">
+                                    <label>Nombre del Rol</label>
+                                    <select class="select" name="nombre_rol" id="nombre_rol">
                                         <option selected disabled> --Select --</option>
-                                        @foreach ($role_name as $role )
-                                        <option value="{{ $role->role_type }}">{{ $role->role_type }}</option>
+                                        @foreach ($roles as $rol )
+                                        <option value="{{ $rol->nombre_rol }}">{{ $rol->nombre_rol }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="col-sm-6">
-                                    <label>Position</label>
-                                    <select class="select" name="position" id="position">
+                                    <label>Puesto:</label>
+                                    <select class="select" name="puesto" id="puesto">
                                         <option selected disabled> --Select --</option>
-                                        @foreach ($position as $positions )
-                                        <option value="{{ $positions->position }}">{{ $positions->position }}</option>
+                                        @foreach ($puestos as $puesto )
+                                        <option value="{{ $puesto->nombre }}">{{ $puesto->nombre }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                             <br>
                             <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label>Phone</label>
-                                        <input class="form-control" type="tel" id="" name="phone" placeholder="Enter Phone">
+
+
+                                    <div class="col-sm-6">
+                                        <label>Empresa:</label>
+                                        <select class="select" name="empresa" id="empresa">
+                                            <option selected disabled> --Select --</option>
+                                            @foreach ($empresas as $empresa )
+                                            <option value="{{ $empresa->id }}">{{ $empresa->nombre }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <label>Department</label>
-                                    <select class="select" name="department" id="department">
+
+                                    <div class="col-sm-6">
+                                    <label>Área Departamento:</label>
+                                    <select class="select" name="departamento" id="departamento">
                                         <option selected disabled> --Select --</option>
-                                        @foreach ($department as $departments )
-                                        <option value="{{ $departments->department }}">{{ $departments->department }}</option>
+                                        @foreach ($departamentos as $departamento )
+                                        <option value="{{ $departamento->nombre }}">{{ $departamento->nombre }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <label>Status</label>
-                                    <select class="select" name="status" id="status">
-                                        <option selected disabled> --Select --</option>
-                                        @foreach ($status_user as $status )
-                                        <option value="{{ $status->type_name }}">{{ $status->type_name }}</option>
-                                        @endforeach
+                                    <label>Estado:</label>
+                                    <select class="select" name="estado" id="estado">
+                                        <option selected disabled> --Seleccione --</option>
+
+                                            <option value="1">Activo</option>
+                                            <option value="0" selected>Inactivo</option>
                                     </select>
                                 </div>
                                 <div class="col-sm-6">
-                                    <label>Photo</label>
-                                    <input class="form-control" type="file" id="image" name="image">
+                                    <label>Fotografía:</label>
+                                    <input class="form-control @error('image') is-invalid @enderror" type="file" id="image" name="image">
+                                    <input class="form-control" type="hidden" id="hidden_image" name="hidden_image">
                                 </div>
                             </div>
                             <br>
+
+
+
+
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Password</label>
-                                        <input type="password" class="form-control" name="password" placeholder="Enter Password">
+                                        <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Enter Password">
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <label>Repeat Password</label>
-                                    <input type="password" class="form-control" name="password_confirmation" placeholder="Choose Repeat Password">
+                                    <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" placeholder="Choose Repeat Password">
                                 </div>
                             </div>
                             <div class="submit-section">
-                                <button type="submit" class="btn btn-primary submit-btn">Submit</button>
+                                <button type="submit" class="btn btn-primary submit-btn">Guardar Registro</button>
                             </div>
                         </form>
                     </div>
@@ -260,26 +284,26 @@
         </div>
         <!-- /Add User Modal -->
 
-        <!-- Edit User Modal -->
+        <!-- Editar Usuario Lista Modal -->
         <div id="edit_user" class="modal custom-modal fade" role="dialog">
             <div class="modal-dialog modal-dialog-centered modal-md" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Edit User</h5>
+                        <h5 class="modal-title">Editar Usuario</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <br>
                     <div class="modal-body">
-                        <form action="{{ route('update') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('updateUser') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="user_id" id="e_id" value="">
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label>Name</label>
-                                        <input class="form-control" type="text" name="name" id="e_name" value="" />
+                                        <label>Nombre Usuario:</label>
+                                        <input class="form-control" type="text" name="nombre" id="e_name" value="" />
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
@@ -289,18 +313,18 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <label>Role Name</label>
-                                    <select class="select" name="role_name" id="e_role_name">
-                                        @foreach ($role_name as $role )
-                                        <option value="{{ $role->role_type }}">{{ $role->role_type }}</option>
+                                    <label>Rol Usuario:</label>
+                                    <select class="select" name="nombre_rol" id="e_role_name">
+                                        @foreach ($roles as $rol )
+                                        <option value="{{ $rol->nombre_rol }}">{{ $rol->nombre_rol }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="col-sm-6">
-                                    <label>Position</label>
-                                    <select class="select" name="position" id="e_position">
-                                        @foreach ($position as $positions )
-                                        <option value="{{ $positions->position }}">{{ $positions->position }}</option>
+                                    <label>Puesto:</label>
+                                    <select class="select" name="puesto" id="e_position">
+                                        @foreach ($puestos as $puesto )
+                                        <option value="{{ $puesto->nombre }}">{{ $puesto->nombre }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -309,37 +333,30 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label>Phone</label>
-                                        <input class="form-control" type="text" id="e_phone_number" name="phone" placeholder="Enter Phone">
+                                        <label>Fecha Registro:</label>
+                                        <input class="form-control" type="text" id="e_fecha_ingreso" name="fecha_ingreso" readonly>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
-                                    <label>Department</label>
-                                    <select class="select" name="department" id="e_department">
-                                        @foreach ($department as $departments )
-                                        <option value="{{ $departments->department }}">{{ $departments->department }}</option>
+                                    <label>Area Departamento</label>
+                                    <select class="select" name="departamento" id="e_department">
+                                        @foreach ($departamentos as $departamento )
+                                        <option value="{{ $departamento->nombre }}">{{ $departamento->nombre }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-6">
-                                    <label>Status</label>
-                                    <select class="select" name="status" id="e_status">
-                                        @foreach ($status_user as $status )
-                                        <option value="{{ $status->type_name }}">{{ $status->type_name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-sm-6">
-                                    <label>Photo</label>
+
+                                <div class="col-sm-12">
+                                    <label>Avatar</label>
                                     <input class="form-control" type="file" id="image" name="images">
                                     <input type="hidden" name="hidden_image" id="e_image" value="">
                                 </div>
                             </div>
                             <br>
                             <div class="submit-section">
-                                <button type="submit" class="btn btn-primary submit-btn">Update</button>
+                                <button type="submit" class="btn btn-primary submit-btn">Actualizar</button>
                             </div>
                         </form>
                     </div>
@@ -386,25 +403,25 @@
         {
             var _this = $(this).parents('tr');
             $('#e_id').val(_this.find('.id').text());
-            $('#e_name').val(_this.find('.name').text());
+            $('#e_name').val(_this.find('.nombre').text());
             $('#e_email').val(_this.find('.email').text());
-            $('#e_phone_number').val(_this.find('.phone_number').text());
+            $('#e_fecha_ingreso').val(_this.find('.fecha_ingreso').text());
             $('#e_image').val(_this.find('.image').text());
 
-            var name_role = (_this.find(".role_name").text());
-            var _option = '<option selected value="' + name_role+ '">' + _this.find('.role_name').text() + '</option>'
+            var name_role = (_this.find(".nombre_rol").text());
+            var _option = '<option selected value="' + name_role+ '">' + _this.find('.nombre_rol').text() + '</option>'
             $( _option).appendTo("#e_role_name");
 
-            var position = (_this.find(".position").text());
-            var _option = '<option selected value="' +position+ '">' + _this.find('.position').text() + '</option>'
+            var position = (_this.find(".puesto").text());
+            var _option = '<option selected value="' +position+ '">' + _this.find('.puesto').text() + '</option>'
             $( _option).appendTo("#e_position");
 
-            var department = (_this.find(".department").text());
-            var _option = '<option selected value="' +department+ '">' + _this.find('.department').text() + '</option>'
+            var department = (_this.find(".departamento").text());
+            var _option = '<option selected value="' +department+ '">' + _this.find('.departamento').text() + '</option>'
             $( _option).appendTo("#e_department");
 
-            var statuss = (_this.find(".statuss").text());
-            var _option = '<option selected value="' +statuss+ '">' + _this.find('.statuss').text() + '</option>'
+            var statuss = (_this.find(".estado").text());
+            var _option = '<option selected value="' +statuss+ '">' + _this.find('.estado').text() + '</option>'
             $( _option).appendTo("#e_status");
 
         });

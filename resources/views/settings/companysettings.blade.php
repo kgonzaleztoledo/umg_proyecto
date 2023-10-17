@@ -130,7 +130,7 @@
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <label>Sitio Web:</label>
-                                    <input class="form-control" value="https://www.soengsouy.com" type="text">
+                                    <input class="form-control" value="#" type="text">
                                 </div>
                             </div>
                         </div>

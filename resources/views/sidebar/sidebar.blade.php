@@ -24,13 +24,20 @@
                         <span> Catalogos </span> <span class="menu-arrow"></span>
                     </a>
                     <ul style="display: none;">
-                        <li><a class="{{set_active(['employee/profile/*'])}}" href="{{ route('form/empresas/page') }}"> Empresas</a></li>
+                        @if (Auth::user()->nombre_rol=='Super Admin')
+                        <li><a class="{{set_active(['form/empresas/page'])}}" href="{{ route('form/empresas/page') }}"> Empresas</a></li>
+                        @endif
+                        <li><a class="{{set_active(['form/descuentos/page'])}}" href="{{ route('form/descuentos/page') }}"> Tipo Descuentos</a></li>
+
+                        <li><a class="{{set_active(['form/rol_usuario/page'])}}" href="{{ route('form/rol_usuario/page') }}"> Rol Usuario</a></li>
+                        <li><a class="{{set_active(['form/departamentos/page'])}}" href="{{ route('form/departamentos/page') }}"> Departamentos</a></li>
+
+                        <li><a class="{{set_active(['form/puestos/page'])}}" href="{{ route('form/puestos/page') }}"> Puestos</a></li>
+                        <li><a class="{{set_active(['form/planillas/page'])}}" href="{{ route('form/planillas/page') }}"> Tipo Planillas</a></li>
                     </ul>
                 </li>
 
-
-
-                @if (Auth::user()->role_name=='Admin')
+                @if (Auth::user()->nombre_rol=='Super Admin')
                     <li class="menu-title"> <span>Authentication</span> </li>
                     <li class="{{set_active(['search/user/list','userManagement','activity/log','activity/login/logout'])}} submenu">
                         <a href="#" class="{{ set_active(['search/user/list','userManagement','activity/log','activity/login/logout']) ? 'noti-dot' : '' }}">
@@ -38,7 +45,7 @@
                         </a>
                         <ul style="{{ request()->is('/*') ? 'display: block;' : 'display: none;' }}">
                             <li><a class="{{set_active(['search/user/list','userManagement'])}}" href="{{ route('userManagement') }}">Listado de Usuario</a></li>
-                            <li><a class="{{set_active(['activity/log'])}}" href="{{ route('activity/log') }}">Agregar Usuario</a></li>
+
 
                             <li><a class="{{set_active(['activity/log'])}}" href="{{ route('activity/log') }}">Registro de actividades</a></li>
                             <li><a class="{{set_active(['activity/login/logout'])}}" href="{{ route('activity/login/logout') }}">Actividades Usuario</a></li>
@@ -156,7 +163,7 @@
                         <span> Profile </span> <span class="menu-arrow"></span>
                     </a>
                     <ul style="display: none;">
-                        <li><a class="{{set_active(['employee/profile/*'])}}" href="{{ route('all/employee/list') }}"> Employee Profile </a></li>
+                        <li><a class="{{set_active(['employee/profile/*'])}}" href="{{ route('todo/empleado/lista') }}"> Employee Profile </a></li>
                     </ul>
                 </li>
             </ul>

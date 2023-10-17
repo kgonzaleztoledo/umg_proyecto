@@ -1,7 +1,7 @@
 
 @extends('layouts.master')
 @section('content')
-   
+
     <!-- Page Wrapper -->
     <div class="page-wrapper">
         <!-- Page Content -->
@@ -10,17 +10,17 @@
             <div class="page-header">
                 <div class="row align-lists-center">
                     <div class="col">
-                        <h3 class="page-title">Employee</h3>
+                        <h3 class="page-title">Empleado</h3>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Employee</li>
+                            <li class="breadcrumb-item active">Empleado:</li>
                         </ul>
                     </div>
                     <div class="col-auto float-right ml-auto">
                         <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee"><i class="fa fa-plus"></i> Add Employee</a>
                         <div class="view-icons">
                             <a href="{{ route('all/employee/card') }}" class="grid-view btn btn-link active"><i class="fa fa-th"></i></a>
-                            <a href="{{ route('all/employee/list') }}" class="list-view btn btn-link"><i class="fa fa-bars"></i></a>
+                            <a href="{{ route('todo/empleado/lista') }}" class="list-view btn btn-link"><i class="fa fa-bars"></i></a>
                         </div>
                     </div>
                 </div>
@@ -31,26 +31,26 @@
             <form action="{{ route('all/employee/search') }}" method="POST">
                 @csrf
                 <div class="row filter-row">
-                    <div class="col-sm-6 col-md-3">  
+                    <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus">
                             <input type="text" class="form-control floating" name="employee_id">
                             <label class="focus-label">Employee ID</label>
                         </div>
                     </div>
-                    <div class="col-sm-6 col-md-3">  
+                    <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus">
                             <input type="text" class="form-control floating" name="name">
                             <label class="focus-label">Employee Name</label>
                         </div>
                     </div>
-                    <div class="col-sm-6 col-md-3"> 
+                    <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus">
                             <input type="text" class="form-control floating" name="position">
                             <label class="focus-label">Position</label>
                         </div>
                     </div>
-                    <div class="col-sm-6 col-md-3">  
-                        <button type="sumit" class="btn btn-success btn-block"> Search </button>  
+                    <div class="col-sm-6 col-md-3">
+                        <button type="sumit" class="btn btn-success btn-block"> Search </button>
                     </div>
                 </div>
             </form>
@@ -62,7 +62,7 @@
                 <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
                     <div class="profile-widget">
                         <div class="profile-img">
-                            <a href="{{ url('employee/profile/'.$lists->user_id) }}" class="avatar"><img src="{{ URL::to('/assets/images/'. $lists->avatar) }}" alt="{{ $lists->avatar }}" alt="{{ $lists->avatar }}"></a>
+                            <a href="{{ url('empleado/perfil/'.$lists->user_id) }}" class="avatar"><img src="{{ URL::to('/assets/images/'. $lists->avatar) }}" alt="{{ $lists->avatar }}" alt="{{ $lists->avatar }}"></a>
                         </div>
                         <div class="dropdown profile-action">
                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -71,8 +71,8 @@
                                 <a class="dropdown-item" href="{{url('all/employee/delete/'.$lists->user_id)}}"onclick="return confirm('Are you sure to want to delete it?')"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                             </div>
                         </div>
-                        <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a href="profile.html">{{ $lists->name }}</a></h4>
-                        <div class="small text-muted">{{ $lists->position }}</div>
+                        <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a href="profile.html">{{ $lists->nombre }}</a></h4>
+                        <div class="small text-muted">{{ $lists->puesto }}</div>
                     </div>
                 </div>
                 @endforeach
@@ -100,12 +100,12 @@
                                         <select class="select select2s-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" id="name" name="name">
                                             <option value="">-- Select --</option>
                                             @foreach ($userList as $key=>$user )
-                                                <option value="{{ $user->name }}" data-employee_id={{ $user->user_id }} data-email={{ $user->email }}>{{ $user->name }}</option>
+                                                <option value="{{ $user->nombre }}" data-employee_id={{ $user->user_id }} data-email={{ $user->email }}>{{ $user->nombre }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
-                            
+
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="col-form-label">Email <span class="text-danger">*</span></label>
@@ -129,7 +129,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-sm-6">  
+                                <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="col-form-label">Employee ID <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" id="employee_id" name="employee_id" placeholder="Auto id employee" readonly>
@@ -141,7 +141,7 @@
                                         <select class="select select2s-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" id="company" name="company">
                                             <option value="">-- Select --</option>
                                             @foreach ($userList as $key=>$user )
-                                                <option value="{{ $user->name }}">{{ $user->name }}</option>
+                                                <option value="{{ $user->nombre }}">{{ $user->nombre }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -208,7 +208,7 @@
             </div>
         </div>
         <!-- /Add Employee Modal -->
-        
+
     </div>
     <!-- /Page Wrapper -->
     @section('script')
@@ -269,7 +269,7 @@
             var statuss = (_this.find(".statuss").text());
             var _option = '<option selected value="' +statuss+ '">' + _this.find('.statuss').text() + '</option>'
             $( _option).appendTo("#e_status");
-            
+
         });
     </script>
     @endsection

@@ -12,7 +12,7 @@ class PayrollController extends Controller
     // view page salary
     public function salary()
     {
-        $users            = DB::table('users')->join('staff_salaries', 'users.user_id', '=', 'staff_salaries.user_id')->select('users.*', 'staff_salaries.*')->get(); 
+        $users            = DB::table('users')->join('staff_salaries', 'users.user_id', '=', 'staff_salaries.user_id')->select('users.*', 'staff_salaries.*')->get();
         $userList         = DB::table('users')->get();
         $permission_lists = DB::table('permission_lists')->get();
         return view('payroll.employeesalary',compact('users','userList','permission_lists'));
@@ -132,7 +132,7 @@ class PayrollController extends Controller
             DB::commit();
             Toastr::success('Salary deleted successfully :)','Success');
             return redirect()->back();
-            
+
         } catch(\Exception $e) {
             DB::rollback();
             Toastr::error('Salary deleted fail :)','Error');

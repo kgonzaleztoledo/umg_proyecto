@@ -24,7 +24,7 @@
                         </div>
                     </div>
                 </div>
-           
+
             <div class="row" style="margin-left: -240px;">
                 <div class="col-md-12">
                     <div class="card">
@@ -53,10 +53,10 @@
                             <div class="row">
                                 <div class="col-lg-12 m-b-20">
                                     <ul class="list-unstyled">
-                                        <li><h5 class="mb-0"><strong>{{ $users->name }}</strong></h5></li>
-                                        <li><span>{{ $users->position }}</span></li>
+                                        <li><h5 class="mb-0"><strong>{{ $users->nombre }}</strong></h5></li>
+                                        <li><span>{{ $users->puesto }}</span></li>
                                         <li>Employee ID: {{ $users->user_id }}</li>
-                                        <li>Joining Date: {{ $users->join_date }}</li>
+                                        <li>Joining Date: {{ $users->fecha_ingreso }}</li>
                                     </ul>
                                 </div>
                             </div>

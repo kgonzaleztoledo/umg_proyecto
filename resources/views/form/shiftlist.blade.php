@@ -4,7 +4,7 @@
     <!-- Page Wrapper -->
     <div class="page-wrapper">
         <div class="content container-fluid">
-        
+
             <!-- Page Header -->
             <div class="page-header">
                 <div class="row">
@@ -12,7 +12,7 @@
                         <h3 class="page-title">Shift List</h3>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('home') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('all/employee/list') }}">Employees</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('todo/empleado/lista') }}">Empleados</a></li>
                             <li class="breadcrumb-item active">Shift List</li>
                         </ul>
                     </div>
@@ -190,7 +190,7 @@
 
         </div>
         <!-- /Page Content -->
-     
+
         <!-- Add Shift Modal -->
         <div id="add_shift" class="modal custom-modal fade" role="dialog">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -225,7 +225,7 @@
                                         <label>Start Time <span class="text-danger">*</span></label>
                                         <div class="input-group time timepicker">
                                             <input class="form-control"><span class="input-group-append input-group-addon"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></span>
-                                        </div>									
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -233,9 +233,9 @@
                                         <label>Max Start Time <span class="text-danger">*</span></label>
                                         <div class="input-group time timepicker">
                                             <input class="form-control"><span class="input-group-append input-group-addon"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></span>
-                                        </div>											
+                                        </div>
                                     </div>
-                                </div>		
+                                </div>
                                 <div class="col-md-4">
                                     <div class="form-group" >
                                         <label>Min End Time <span class="text-danger">*</span></label>
@@ -249,7 +249,7 @@
                                         <label>End Time <span class="text-danger">*</span></label>
                                         <div class="input-group time timepicker">
                                             <input class="form-control"><span class="input-group-append input-group-addon"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></span>
-                                        </div>									
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -257,13 +257,13 @@
                                         <label>Max End Time <span class="text-danger">*</span></label>
                                         <div class="input-group time timepicker">
                                             <input class="form-control"><span class="input-group-append input-group-addon"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></span>
-                                        </div>											
+                                        </div>
                                     </div>
-                                </div>	
+                                </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Break Time (In Minutes) </label>
-                                        <input type="text" class="form-control">											
+                                        <input type="text" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
@@ -289,17 +289,17 @@
                                 <div class="col-sm-12">
                                     <div class="form-group wday-box">
                                         <label class="checkbox-inline"><input type="checkbox" value="monday" class="days recurring" checked=""><span class="checkmark">M</span></label>
-    
+
                                         <label class="checkbox-inline"><input type="checkbox" value="tuesday" class="days recurring" checked=""><span class="checkmark">T</span></label>
-                                    
+
                                         <label class="checkbox-inline"><input type="checkbox" value="wednesday" class="days recurring" checked=""><span class="checkmark">W</span></label>
-                                    
+
                                         <label class="checkbox-inline"><input type="checkbox" value="thursday" class="days recurring" checked=""><span class="checkmark">T</span></label>
-                                    
+
                                         <label class="checkbox-inline"><input type="checkbox" value="friday" class="days recurring" checked=""><span class="checkmark">F</span></label>
-                                    
+
                                         <label class="checkbox-inline"><input type="checkbox" value="saturday" class="days recurring"><span class="checkmark">S</span></label>
-                                    
+
                                         <label class="checkbox-inline"><input type="checkbox" value="sunday" class="days recurring"><span class="checkmark">S</span></label>
                                     </div>
                                 </div>
@@ -314,18 +314,18 @@
                                         <input type="checkbox" class="custom-control-input" id="customCheck2">
                                         <label class="custom-control-label" for="customCheck2">Indefinite</label>
                                     </div>
-                                </div>								
-                        
+                                </div>
+
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>Add Tag </label>
-                                        <input type="text" class="form-control">											
+                                        <input type="text" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>Add Note </label>
-                                        <textarea class="form-control"></textarea>											
+                                        <textarea class="form-control"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -373,7 +373,7 @@
                                         <label>Start Time <span class="text-danger">*</span></label>
                                         <div class="input-group time timepicker">
                                             <input class="form-control"><span class="input-group-append input-group-addon"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></span>
-                                        </div>									
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -381,9 +381,9 @@
                                         <label>Max Start Time <span class="text-danger">*</span></label>
                                         <div class="input-group time timepicker">
                                             <input class="form-control"><span class="input-group-append input-group-addon"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></span>
-                                        </div>											
+                                        </div>
                                     </div>
-                                </div>		
+                                </div>
                                 <div class="col-md-4">
                                     <div class="form-group" >
                                         <label>Min End Time <span class="text-danger">*</span></label>
@@ -397,7 +397,7 @@
                                         <label>End Time <span class="text-danger">*</span></label>
                                         <div class="input-group time timepicker">
                                             <input class="form-control"><span class="input-group-append input-group-addon"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></span>
-                                        </div>									
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -405,13 +405,13 @@
                                         <label>Max End Time <span class="text-danger">*</span></label>
                                         <div class="input-group time timepicker">
                                             <input class="form-control"><span class="input-group-append input-group-addon"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></span>
-                                        </div>											
+                                        </div>
                                     </div>
-                                </div>	
+                                </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Break Time (In Minutes) </label>
-                                        <input type="text" class="form-control">											
+                                        <input type="text" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
@@ -437,17 +437,17 @@
                                 <div class="col-sm-12">
                                     <div class="form-group wday-box">
                                         <label class="checkbox-inline"><input type="checkbox" value="monday" class="days recurring" checked=""><span class="checkmark">M</span></label>
-    
+
                                         <label class="checkbox-inline"><input type="checkbox" value="tuesday" class="days recurring" checked=""><span class="checkmark">T</span></label>
-                                    
+
                                         <label class="checkbox-inline"><input type="checkbox" value="wednesday" class="days recurring" checked=""><span class="checkmark">W</span></label>
-                                    
+
                                         <label class="checkbox-inline"><input type="checkbox" value="thursday" class="days recurring" checked=""><span class="checkmark">T</span></label>
-                                    
+
                                         <label class="checkbox-inline"><input type="checkbox" value="friday" class="days recurring" checked=""><span class="checkmark">F</span></label>
-                                    
+
                                         <label class="checkbox-inline"><input type="checkbox" value="saturday" class="days recurring"><span class="checkmark">S</span></label>
-                                    
+
                                         <label class="checkbox-inline"><input type="checkbox" value="sunday" class="days recurring"><span class="checkmark">S</span></label>
                                     </div>
                                 </div>
@@ -462,18 +462,18 @@
                                         <input type="checkbox" class="custom-control-input" id="customCheck4">
                                         <label class="custom-control-label" for="customCheck4">Indefinite</label>
                                         </div>
-                                </div>								
-                        
+                                </div>
+
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>Add Tag </label>
-                                        <input type="text" class="form-control">											
+                                        <input type="text" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>Add Note </label>
-                                        <textarea class="form-control"></textarea>											
+                                        <textarea class="form-control"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -616,7 +616,7 @@
                                     </div>
                                 </div>
                             </div>
-                        
+
                             <div class="submit-section">
                                 <button class="btn btn-primary submit-btn">Submit</button>
                             </div>
@@ -626,7 +626,7 @@
             </div>
         </div>
         <!-- /Add Schedule Modal -->
-            
+
         <!-- Delete Shift Modal -->
         <div class="modal custom-modal fade" id="delete_employee" role="dialog">
             <div class="modal-dialog modal-dialog-centered">
@@ -651,7 +651,7 @@
             </div>
         </div>
         <!-- /Delete Employee Modal -->
-      
+
     </div>
     <!-- Page Wrapper -->
 @endsection

@@ -60,28 +60,31 @@ class LoginController extends Controller
             'email'    => 'required|string',
             'password' => 'required|string',
         ]);
-
+      //  dd($request);
         $username = $request->email;
         $password = $request->password;
+
 
         $dt         = Carbon::now();
         $todayDate  = $dt->toDayDateTimeString();
 
-        if (Auth::attempt(['email'=> $username,'password'=> $password,'status'=>'Active'])) {
+        if (Auth::attempt(['email'=> $username,'password'=> $password,'estado'=>'1'])) {
             /** get session */
             $user = Auth::User();
-            Session::put('name', $user->name);
+
+            Session::put('nombre', $user->nombre);
+            Session::put('empresa_id', $user->empresa_id);
             Session::put('email', $user->email);
             Session::put('user_id', $user->user_id);
-            Session::put('join_date', $user->join_date);
-            Session::put('phone_number', $user->phone_number);
-            Session::put('status', $user->status);
-            Session::put('role_name', $user->role_name);
-            Session::put('avatar', $user->avatar);
-            Session::put('position', $user->position);
-            Session::put('department', $user->department);
+            Session::put('fecha_ingreso', $user->fecha_ingreso);
 
-            $activityLog = ['name'=> Session::get('name'),'email'=> $username,'description' => 'Ha iniciado sesión','date_time'=> $todayDate,];
+            Session::put('estado', $user->estado);
+            Session::put('nombre_rol', $user->nombre_rol);
+            Session::put('avatar', $user->avatar);
+            Session::put('puesto', $user->puesto);
+            Session::put('departamento', $user->departamento);
+
+            $activityLog = ['name'=> Session::get('nombre'),'email'=> $username,'description' => 'Ha iniciado sesión','date_time'=> $todayDate,];
             DB::table('bitacora')->insert($activityLog);
 
             Toastr::success('Se inicio sesión correctamente :)','Éxito');
@@ -97,19 +100,22 @@ class LoginController extends Controller
         $dt         = Carbon::now();
         $todayDate  = $dt->toDayDateTimeString();
 
-        $activityLog = ['name'=> Session::get('name'),'email'=> Session::get('email'),'description' => 'Ha cerrado sesión','date_time'=> $todayDate,];
+        $activityLog = ['name'=> Session::get('nombre'),'email'=> Session::get('email'),'description' => 'Ha cerrado sesión','date_time'=> $todayDate,];
         DB::table('bitacora')->insert($activityLog);
         // forget login session
-        $request->session()->forget('name');
+        $request->session()->forget('nombre');
+        $request->session()->forget('empresa_id');
+
         $request->session()->forget('email');
         $request->session()->forget('user_id');
-        $request->session()->forget('join_date');
-        $request->session()->forget('phone_number');
-        $request->session()->forget('status');
-        $request->session()->forget('role_name');
+
+        $request->session()->forget('fecha_ingreso');
+
+        $request->session()->forget('estado');
+        $request->session()->forget('nombre_rol');
         $request->session()->forget('avatar');
-        $request->session()->forget('position');
-        $request->session()->forget('department');
+        $request->session()->forget('puesto');
+        $request->session()->forget('departamento');
         $request->session()->flush();
         Auth::logout();
         Toastr::success('Se cerro con éxito sesión :)','exitosamente ');

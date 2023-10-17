@@ -4,9 +4,9 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-	<meta name="description" content="SoengSouy Admin Template">
+	<meta name="description" content="Sistema de Recursos Humanos">
 	<meta name="keywords" content="admin, estimates, bootstrap, business, corporate, creative, management, minimal, modern, accounts, invoice, html5, responsive, CRM, Projects">
-	<meta name="author" content="SoengSouy Admin Template">
+	<meta name="author" content="Kenneth Andoni González Toledo">
 	<meta name="robots" content="noindex, nofollow">
 	<title>Dashboard - RRHH</title>
 	<!-- Favicon -->
@@ -21,10 +21,15 @@
 	<link rel="stylesheet" href="{{ URL::to('assets/css/dataTables.bootstrap4.min.css') }}">
 	<!-- Select2 CSS -->
 	<link rel="stylesheet" href="{{ URL::to('assets/css/select2.min.css') }}">
+    <!-- Dropify -->
+	<link rel="stylesheet" href="{{ URL::to('assets/css/dropify.min.css') }}">
+
+
 	<!-- Datetimepicker CSS -->
 	<link rel="stylesheet" href="{{ URL::to('assets/css/bootstrap-datetimepicker.min.css') }}">
 	<!-- Chart CSS -->
-	<link rel="stylesheet" href="{{ URL::to('ssets/plugins/morris/morris.css') }}">
+	<link rel="stylesheet" href="{{ URL::to('assets/plugins/morris/morris.css') }}">
+
 	<!-- Main CSS -->
 	<link rel="stylesheet" href="{{ URL::to('assets/css/style.css') }}">
 
@@ -32,6 +37,8 @@
 	<link rel="stylesheet" href="{{ URL::to('assets/css/toastr.min.css') }}">
 	<script src="{{ URL::to('assets/js/toastr_jquery.min.js') }}"></script>
 	<script src="{{ URL::to('assets/js/toastr.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @livewireStyles
 </head>
 
 <body>
@@ -74,7 +81,7 @@
 			</a>
 			<!-- Header Title -->
 			<div class="page-title-box">
-				<h3>Hola, {{ Session::get('name') }}</h3>
+				<h3>Hola, {{ Session::get('nombre') }}</h3>
 			</div>
 			<!-- /Header Title -->
 			<a id="mobile_btn" class="mobile_btn" href="#sidebar"><i class="fa fa-bars"></i></a>
@@ -141,14 +148,14 @@
 				<li class="nav-item dropdown has-arrow main-drop">
 					<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
 						<span class="user-img">
-						<img src="{{ URL::to('/assets/images/'. Auth::user()->avatar) }}" alt="{{ Auth::user()->name }}">
+						<img src="{{ URL::to('/assets/images/'. Auth::user()->avatar) }}" alt="{{ Auth::user()->nombre }}">
 						<span class="status online"></span></span>
-						<span>{{ Session::get('name') }}</span>
+						<span>{{ Session::get('nombre') }}</span>
 					</a>
 					<div class="dropdown-menu">
-						<a class="dropdown-item" href="{{ route('profile_user') }}">My Profile</a>
-						<a class="dropdown-item" href="{{ route('company/settings/page') }}">Settings</a>
-						<a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
+						<a class="dropdown-item" href="{{ route('perfil_usario') }}">Mi Perfil</a>
+						<a class="dropdown-item" href="{{ route('company/settings/page') }}">Ajustes</a>
+						<a class="dropdown-item" href="{{ route('logout') }}">Cerrar sesión</a>
 					</div>
 				</li>
 			</ul>
@@ -160,9 +167,9 @@
 					<i class="fa fa-ellipsis-v"></i>
 				</a>
 				<div class="dropdown-menu dropdown-menu-right">
-					<a class="dropdown-item" href="{{ route('profile_user') }}">My Profile</a>
-					<a class="dropdown-item" href="{{ route('company/settings/page') }}">Settings</a>
-					<a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
+					<a class="dropdown-item" href="{{ route('perfil_usario') }}">Mi Perfil</a>
+					<a class="dropdown-item" href="{{ route('company/settings/page') }}">Ajustes</a>
+					<a class="dropdown-item" href="{{ route('logout') }}">Cerrar sesión</a>
 				</div>
 			</div>
 			<!-- /Mobile Menu -->
@@ -176,6 +183,7 @@
 		@yield('content')
 		<!-- /Page Wrapper -->
 	</div>
+
 	<!-- /Main Wrapper -->
 
 	<!-- jQuery -->
@@ -193,6 +201,8 @@
 	<script src="{{ URL::to('assets/js/jquery.slimscroll.min.js') }}"></script>
 	<!-- Select2 JS -->
 	<script src="{{ URL::to('assets/js/select2.min.js') }}"></script>
+    	<!-- Dropify -->
+	<script src="{{ URL::to('assets/js/dropify.min.js') }}"></script>
 	<!-- Datetimepicker JS -->
 	<script src="{{ URL::to('assets/js/moment.min.js') }}"></script>
 	<script src="{{ URL::to('assets/js/bootstrap-datetimepicker.min.js') }}"></script>
@@ -203,6 +213,8 @@
 	<script src="{{ URL::to('assets/js/multiselect.min.js') }}"></script>
 	<!-- Custom JS -->
 	<script src="{{ URL::to('assets/js/app.js') }}"></script>
+
+    @livewireScripts
 	@yield('script')
 </body>
 </html>
