@@ -58,6 +58,13 @@
                                             </div>
                                         </div>
                                         <div class="col-md-7">
+                                            @if(is_null($users->telefono_movil))
+                                            <div class="img-thumbnail  mx-auto d-block">
+                                                <a href="{{ URL::to('/assets/images/img_n.jpg') }}" class="image-tile" target="_blank">
+                                                 <img class="img-fluid" src="{{ URL::to('/assets/images/falta_info_sm.jpg') }}"  alt="NO FOTOGRAFIA" >
+                                                 </a>
+                                              </div>
+                                            @else
                                             <ul class="personal-info">
                                                 @if (!empty($users))
                                                     <li>
@@ -138,6 +145,7 @@
                                                     </li>
                                                 @endif
                                             </ul>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -170,6 +178,16 @@
                     <div class="row">
                         <div class="col-md-6 d-flex">
                             <div class="card profile-box flex-fill">
+                                @if(is_null($users->cui_dpi))
+                                <h3 class="card-title"><a href="#"
+                                    class="edit-icon" data-toggle="modal" data-target="#personal_info_modal"><i
+                                        class="fa fa-pencil"></i></a></h3>
+                                        <div class="card-body">
+                                    <a href="{{ URL::to('/assets/images/img_n.jpg') }}" class="image-tile" target="_blank">
+                                     <img class="img-fluid" src="{{ URL::to('/assets/images/falta_info.jpg') }}"  alt="NO FOTOGRAFIA" >
+                                     </a>
+                                  </div>
+                                @else
                                 <div class="card-body">
                                     <h3 class="card-title">Información Primaria del Empleado: <a href="#"
                                             class="edit-icon" data-toggle="modal" data-target="#personal_info_modal"><i
@@ -217,6 +235,7 @@
 
                                     </ul>
                                 </div>
+                                @endif
                             </div>
                         </div>
 
@@ -225,6 +244,15 @@
                         <div class="col-md-6 d-flex">
                             <div class="card profile-box flex-fill">
                                 <div class="card-body">
+                                    @if(is_null($users->cui_dpi))
+
+                                    <div class="img-thumbnail  mx-auto d-block">
+                                        <a href="{{ URL::to('/assets/images/img_n.jpg') }}" class="image-tile" target="_blank">
+                                         <img class="img-fluid" src="{{ URL::to('/assets/images/falta_info.jpg') }}"  alt="NO FOTOGRAFIA" >
+                                         </a>
+                                      </div>
+                                    @else
+
                                     <h3 class="card-title">Información Secundaria del Empleado:</h3>
                                     <ul class="personal-info">
                                         <li>
@@ -248,6 +276,7 @@
                                             <div class="text">{{ $users->total_hijos }}</div>
                                         </li>
                                     </ul>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -260,6 +289,13 @@
                         <div class="col-md-6 d-flex">
                             <div class="card profile-box flex-fill">
                                 <div class="card-body">
+                                    @if(is_null($users->cui_dpi))
+                                    <div class="img-thumbnail  mx-auto d-block">
+                                        <a href="{{ URL::to('/assets/images/img_n.jpg') }}" class="image-tile" target="_blank">
+                                         <img class="img-fluid" src="{{ URL::to('/assets/images/falta_info.jpg') }}"  alt="NO FOTOGRAFIA" >
+                                         </a>
+                                      </div>
+                                    @else
                                     <h3 class="card-title">Información Bancaria</h3>
                                     <ul class="personal-info">
                                         <li>
@@ -277,32 +313,51 @@
                                         </li>
 
                                     </ul>
+                                    @endif
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6 d-flex">
                             <div class="card profile-box flex-fill">
+
                                 <div class="card-body">
-                                    <h3 class="card-title">Family Informations <a href="#" class="edit-icon"
+
+                                    @if($familiares->isEmpty())
+                                    <h3 class="card-title"><a href="#" class="edit-icon"
+                                        data-toggle="modal" data-target="#family_info_modal"><i
+                                            class="fa fa-pencil"></i></a></h3>
+
+
+                                    <div class="img-thumbnail  mx-auto d-block">
+                                        <a href="{{ URL::to('/assets/images/img_n.jpg') }}" class="image-tile" target="_blank">
+                                         <img class="img-fluid" src="{{ URL::to('/assets/images/falta_info.jpg') }}"  alt="NO FOTOGRAFIA" >
+                                         </a>
+                                      </div>
+                                    @else
+                                    <h3 class="card-title">Información familiar<a href="#" class="edit-icon"
                                             data-toggle="modal" data-target="#family_info_modal"><i
                                                 class="fa fa-pencil"></i></a></h3>
                                     <div class="table-responsive">
                                         <table class="table table-nowrap">
                                             <thead>
                                                 <tr>
-                                                    <th>Name</th>
-                                                    <th>Relationship</th>
-                                                    <th>Date of Birth</th>
+                                                    <th>Nombres Y Apellidos</th>
+                                                    <th>Relación</th>
+                                                    <th>Fecha de nacimiento</th>
                                                     <th>Phone</th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td>Leo</td>
-                                                    <td>Brother</td>
-                                                    <td>Feb 16th, 2019</td>
-                                                    <td>9876543210</td>
+                                                    @foreach ($familiares as $familiare )
+
+
+                                                    <td>{{ $familiare->primer_nombre ." ". $familiare->primer_apellido}}</td>
+
+                                                    <td>{{ $familiare->parentesco}}</td>
+                                                    <td>{{ date('d F, Y', strtotime ($familiare->fecha_nacimiento))}}</td>
+                                                    <td>{{ $familiare->movil}}</td>
                                                     <td class="text-right">
                                                         <div class="dropdown dropdown-action">
                                                             <a aria-expanded="false" data-toggle="dropdown"
@@ -316,10 +371,13 @@
                                                             </div>
                                                         </div>
                                                     </td>
+
                                                 </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -328,90 +386,43 @@
                         <div class="col-md-6 d-flex">
                             <div class="card profile-box flex-fill">
                                 <div class="card-body">
-                                    <h3 class="card-title">Education Informations <a href="#" class="edit-icon"
-                                            data-toggle="modal" data-target="#education_info"><i
+
+                                    @if($familiares->isEmpty())
+                                    <div class="img-thumbnail  mx-auto d-block">
+                                        <a href="{{ URL::to('/assets/images/img_n.jpg') }}" class="image-tile" target="_blank">
+                                         <img class="img-fluid" src="{{ URL::to('/assets/images/falta_info.jpg') }}"  alt="NO FOTOGRAFIA" >
+                                         </a>
+                                      </div>
+                                    @else
+                                    <h3 class="card-title">Contacto de Emergencia <a href="#" class="edit-icon"
+                                            data-toggle="modal" data-target=""><i
                                                 class="fa fa-pencil"></i></a></h3>
-                                    <div class="experience-box">
-                                        <ul class="experience-list">
-                                            <li>
-                                                <div class="experience-user">
-                                                    <div class="before-circle"></div>
-                                                </div>
-                                                <div class="experience-content">
-                                                    <div class="timeline-content">
-                                                        <a href="#/" class="name">International College of Arts and
-                                                            Science (UG)</a>
-                                                        <div>Bsc Computer Science</div>
-                                                        <span class="time">2000 - 2003</span>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="experience-user">
-                                                    <div class="before-circle"></div>
-                                                </div>
-                                                <div class="experience-content">
-                                                    <div class="timeline-content">
-                                                        <a href="#/" class="name">International College of Arts and
-                                                            Science (PG)</a>
-                                                        <div>Msc Computer Science</div>
-                                                        <span class="time">2000 - 2003</span>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                @foreach ( $famContactos as $famContacto )
+
+
+                                    <h5 class="section-title">Datos</h5>
+                                    <ul class="personal-info">
+                                        <li>
+                                            <div class="title">Nombre y Apellidos</div>
+                                            <div class="text">{{ $famContacto->primer_nombre." ".$famContacto->primer_apellido }}</div>
+                                        </li>
+                                        <li>
+                                            <div class="title">Relación:</div>
+                                            <div class="text">{{$famContacto->parentesco  }}</div>
+                                        </li>
+                                        <li>
+                                            <div class="title">Teléfono </div>
+                                            <div class="text">{{$famContacto->movil  }}</div>
+                                        </li>
+                                    </ul>
+                                    <hr>
+                                    @endforeach
+                                    @endif
+
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 d-flex">
-                            <div class="card profile-box flex-fill">
-                                <div class="card-body">
-                                    <h3 class="card-title">Experience <a href="#" class="edit-icon"
-                                            data-toggle="modal" data-target="#experience_info"><i
-                                                class="fa fa-pencil"></i></a></h3>
-                                    <div class="experience-box">
-                                        <ul class="experience-list">
-                                            <li>
-                                                <div class="experience-user">
-                                                    <div class="before-circle"></div>
-                                                </div>
-                                                <div class="experience-content">
-                                                    <div class="timeline-content">
-                                                        <a href="#/" class="name">Web Designer at Zen
-                                                            Corporation</a>
-                                                        <span class="time">Jan 2013 - Present (5 years 2 months)</span>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="experience-user">
-                                                    <div class="before-circle"></div>
-                                                </div>
-                                                <div class="experience-content">
-                                                    <div class="timeline-content">
-                                                        <a href="#/" class="name">Web Designer at Ron-tech</a>
-                                                        <span class="time">Jan 2013 - Present (5 years 2 months)</span>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="experience-user">
-                                                    <div class="before-circle"></div>
-                                                </div>
-                                                <div class="experience-content">
-                                                    <div class="timeline-content">
-                                                        <a href="#/" class="name">Web Designer at Dalt
-                                                            Technology</a>
-                                                        <span class="time">Jan 2013 - Present (5 years 2 months)</span>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
                 <!-- /Profile Info Tab -->
@@ -1644,346 +1655,12 @@
     </div>
     <!-- /Family Info Modal -->
 
-    <!-- Emergency Contact Modal -->
-    <div id="emergency_contact_modal" class="modal custom-modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Personal Information</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="card">
-                            <div class="card-body">
-                                <h3 class="card-title">Primary Contact</h3>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Name <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Relationship <span class="text-danger">*</span></label>
-                                            <input class="form-control" type="text">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Phone <span class="text-danger">*</span></label>
-                                            <input class="form-control" type="text">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Phone 2</label>
-                                            <input class="form-control" type="text">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <div class="card-body">
-                                <h3 class="card-title">Primary Contact</h3>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Name <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Relationship <span class="text-danger">*</span></label>
-                                            <input class="form-control" type="text">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Phone <span class="text-danger">*</span></label>
-                                            <input class="form-control" type="text">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Phone 2</label>
-                                            <input class="form-control" type="text">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="submit-section">
-                            <button class="btn btn-primary submit-btn">Submit</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- /Emergency Contact Modal -->
 
-    <!-- Education Modal -->
-    <div id="education_info" class="modal custom-modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"> Education Informations</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-scroll">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h3 class="card-title">Education Informations <a href="javascript:void(0);"
-                                            class="delete-icon"><i class="fa fa-trash-o"></i></a></h3>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group form-focus focused">
-                                                <input type="text" value="Oxford University"
-                                                    class="form-control floating">
-                                                <label class="focus-label">Institution</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group form-focus focused">
-                                                <input type="text" value="Computer Science"
-                                                    class="form-control floating">
-                                                <label class="focus-label">Subject</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group form-focus focused">
-                                                <div class="cal-icon">
-                                                    <input type="text" value="01/06/2002"
-                                                        class="form-control floating datetimepicker">
-                                                </div>
-                                                <label class="focus-label">Starting Date</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group form-focus focused">
-                                                <div class="cal-icon">
-                                                    <input type="text" value="31/05/2006"
-                                                        class="form-control floating datetimepicker">
-                                                </div>
-                                                <label class="focus-label">Complete Date</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group form-focus focused">
-                                                <input type="text" value="BE Computer Science"
-                                                    class="form-control floating">
-                                                <label class="focus-label">Degree</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group form-focus focused">
-                                                <input type="text" value="Grade A" class="form-control floating">
-                                                <label class="focus-label">Grade</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="card">
-                                <div class="card-body">
-                                    <h3 class="card-title">Education Informations <a href="javascript:void(0);"
-                                            class="delete-icon"><i class="fa fa-trash-o"></i></a></h3>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group form-focus focused">
-                                                <input type="text" value="Oxford University"
-                                                    class="form-control floating">
-                                                <label class="focus-label">Institution</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group form-focus focused">
-                                                <input type="text" value="Computer Science"
-                                                    class="form-control floating">
-                                                <label class="focus-label">Subject</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group form-focus focused">
-                                                <div class="cal-icon">
-                                                    <input type="text" value="01/06/2002"
-                                                        class="form-control floating datetimepicker">
-                                                </div>
-                                                <label class="focus-label">Starting Date</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group form-focus focused">
-                                                <div class="cal-icon">
-                                                    <input type="text" value="31/05/2006"
-                                                        class="form-control floating datetimepicker">
-                                                </div>
-                                                <label class="focus-label">Complete Date</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group form-focus focused">
-                                                <input type="text" value="BE Computer Science"
-                                                    class="form-control floating">
-                                                <label class="focus-label">Degree</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group form-focus focused">
-                                                <input type="text" value="Grade A" class="form-control floating">
-                                                <label class="focus-label">Grade</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="add-more">
-                                        <a href="javascript:void(0);"><i class="fa fa-plus-circle"></i> Add More</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="submit-section">
-                            <button class="btn btn-primary submit-btn">Submit</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- /Education Modal -->
 
-    <!-- Experience Modal -->
-    <div id="experience_info" class="modal custom-modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Experience Informations</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-scroll">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h3 class="card-title">Experience Informations <a href="javascript:void(0);"
-                                            class="delete-icon"><i class="fa fa-trash-o"></i></a></h3>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group form-focus">
-                                                <input type="text" class="form-control floating"
-                                                    value="Digital Devlopment Inc">
-                                                <label class="focus-label">Company Name</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group form-focus">
-                                                <input type="text" class="form-control floating"
-                                                    value="United States">
-                                                <label class="focus-label">Location</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group form-focus">
-                                                <input type="text" class="form-control floating"
-                                                    value="Web Developer">
-                                                <label class="focus-label">Job Position</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group form-focus">
-                                                <div class="cal-icon">
-                                                    <input type="text" class="form-control floating datetimepicker"
-                                                        value="01/07/2007">
-                                                </div>
-                                                <label class="focus-label">Period From</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group form-focus">
-                                                <div class="cal-icon">
-                                                    <input type="text" class="form-control floating datetimepicker"
-                                                        value="08/06/2018">
-                                                </div>
-                                                <label class="focus-label">Period To</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="card">
-                                <div class="card-body">
-                                    <h3 class="card-title">Experience Informations <a href="javascript:void(0);"
-                                            class="delete-icon"><i class="fa fa-trash-o"></i></a></h3>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group form-focus">
-                                                <input type="text" class="form-control floating"
-                                                    value="Digital Devlopment Inc">
-                                                <label class="focus-label">Company Name</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group form-focus">
-                                                <input type="text" class="form-control floating"
-                                                    value="United States">
-                                                <label class="focus-label">Location</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group form-focus">
-                                                <input type="text" class="form-control floating"
-                                                    value="Web Developer">
-                                                <label class="focus-label">Job Position</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group form-focus">
-                                                <div class="cal-icon">
-                                                    <input type="text" class="form-control floating datetimepicker"
-                                                        value="01/07/2007">
-                                                </div>
-                                                <label class="focus-label">Period From</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group form-focus">
-                                                <div class="cal-icon">
-                                                    <input type="text" class="form-control floating datetimepicker"
-                                                        value="08/06/2018">
-                                                </div>
-                                                <label class="focus-label">Period To</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="add-more">
-                                        <a href="javascript:void(0);"><i class="fa fa-plus-circle"></i> Add More</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="submit-section">
-                            <button class="btn btn-primary submit-btn">Submit</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /Experience Modal -->
 
     <!-- /Page Content -->
     </div>

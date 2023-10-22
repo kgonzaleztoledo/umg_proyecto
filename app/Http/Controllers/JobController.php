@@ -14,15 +14,15 @@ use Brian2694\Toastr\Facades\Toastr;
 class JobController extends Controller
 {
     // job List
-    public function jobList()
-    {    
-        $job_list = DB::table('add_jobs')->get();
-        return view('job.joblist',compact('job_list'));
-    }
-    
+  //  public function jobList()
+   // {
+     //   $job_list = DB::table('add_jobs')->get();
+       // return view('job.joblist',compact('job_list'));
+   // }
+
     // job view
     public function jobView($id)
-    { 
+    {
         /** update count */
         $post = AddJob::find($id);
         $update = ['count' =>$post->count + 1,];
@@ -44,7 +44,7 @@ class JobController extends Controller
         return view('job.jobsdashboard');
     }
     /** user all job */
-    public function userDashboardAll() 
+    public function userDashboardAll()
     {
         return view('job.useralljobs');
     }
@@ -115,7 +115,7 @@ class JobController extends Controller
 
         DB::beginTransaction();
         try {
-            
+
             $add_job = new AddJob;
             $add_job->job_title       = $request->job_title;
             $add_job->department      = $request->department;
@@ -135,14 +135,14 @@ class JobController extends Controller
             DB::commit();
             Toastr::success('Create add job successfully :)','Success');
             return redirect()->back();
-            
+
         } catch(\Exception $e) {
             DB::rollback();
             Toastr::error('Add Job fail :)','Error');
             return redirect()->back();
-        } 
+        }
     }
-    
+
     /** job applicants */
     public function jobApplicants($job_title)
     {
@@ -165,7 +165,7 @@ class JobController extends Controller
     }
 
     /** apply Job SaveRecord */
-    public function applyJobSaveRecord(Request $request) 
+    public function applyJobSaveRecord(Request $request)
     {
         $request->validate([
             'job_title' => 'required|string|max:255',
@@ -180,9 +180,9 @@ class JobController extends Controller
         try {
 
             /** upload file */
-            $cv_uploads = time().'.'.$request->cv_upload->extension();  
+            $cv_uploads = time().'.'.$request->cv_upload->extension();
             $request->cv_upload->move(public_path('assets/images'), $cv_uploads);
-            
+
             $apply_job = new ApplyForJob;
             $apply_job->job_title = $request->job_title;
             $apply_job->name      = $request->name;
@@ -195,12 +195,12 @@ class JobController extends Controller
             DB::commit();
             Toastr::success('Apply job successfully :)','Success');
             return redirect()->back();
-            
+
         } catch(\Exception $e) {
             DB::rollback();
             Toastr::error('Apply Job fail :)','Error');
             return redirect()->back();
-        } 
+        }
     }
 
     /** applyJobUpdateRecord */
@@ -233,7 +233,7 @@ class JobController extends Controller
             DB::rollback();
             Toastr::error('Update Leaves fail :)','Error');
             return redirect()->back();
-        } 
+        }
     }
 
     /** manage Resumes */
@@ -276,7 +276,7 @@ class JobController extends Controller
             $save = new Category;
             $save->category = $request->category;
             $save->save();
-            
+
             DB::commit();
             Toastr::success('Create new Category successfully :)','Success');
             return redirect()->back();
@@ -309,7 +309,7 @@ class JobController extends Controller
         try {
 
             /** upload file */
-            $image_to_questions = time().'.'.$request->image_to_question->extension();  
+            $image_to_questions = time().'.'.$request->image_to_question->extension();
             $request->image_to_question->move(public_path('assets/images/question'), $image_to_questions);
 
             $save = new Question;
@@ -326,7 +326,7 @@ class JobController extends Controller
             $save->video_link         = $request->video_link;
             $save->image_to_question  = $image_to_questions;
             $save->save();
-            
+
             DB::commit();
             Toastr::success('Create new Question successfully :)','Success');
             return redirect()->back();
@@ -334,7 +334,7 @@ class JobController extends Controller
             DB::rollback();
             Toastr::error('Add Question fail :)','Error');
             return redirect()->back();
-        } 
+        }
     }
 
     /** question update */
@@ -342,7 +342,7 @@ class JobController extends Controller
     {
         DB::beginTransaction();
         try {
-            
+
             $update = [
                 'id'            => $request->id,
                 'category'      => $request->category,
@@ -377,7 +377,7 @@ class JobController extends Controller
             Question::destroy($request->id);
             Toastr::success('Question deleted successfully :)','Success');
             return redirect()->back();
-        
+
         } catch(\Exception $e) {
             DB::rollback();
             Toastr::error('Question delete fail :)','Error');

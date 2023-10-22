@@ -61,14 +61,81 @@ class EmpresaController extends Controller
         return view('form.planillaListado');
     }
 
+    public function indexPlanillaElectronica()
+    {
+        //dd($empresas);
+        return view('form.encabezado_nomina');
+    }
 
+    public function viewDetallePlanilla($employeid)
+        {
+
+
+
+            $sku_empresa =Auth::user()->empresa_id;
+            $Empresa = Empresa::where('id', '=', $sku_empresa)->find($sku_empresa);
+            $sku = $Empresa->sku_empresa;
+
+
+                $DetallePLanillas = DB::table('empleados')
+                            ->join('detalle_nominas', 'empleados.id', '=', 'detalle_nominas.empleado_id')
+
+                            ->join('encabezado_nominas', 'detalle_nominas.encabezado_nominas_id', '=', 'encabezado_nominas.id')
+                            ->join('tipo_planillas', 'encabezado_nominas..tipo_planilla_id', '=', 'tipo_planillas.id')
+                            ->select('empleados.*', 'detalle_nominas.*','detalle_nominas.id as imprimirid','encabezado_nominas.*','tipo_planillas.*',
+                             )
+                             ->where('encabezado_nominas_id',$employeid)
+                            ->get();
+
+//                            dd($DetallePLanillas);
+
+      // $idencabeza= $employeid;
+        return view('form.detalle_nomina' , compact('DetallePLanillas'));
+    }
+
+    public function ImprimirReporteEmpleado($impimirempleado)
+
+        {
+            $sku_empresa =Auth::user()->empresa_id;
+            $Empresa = Empresa::where('id', '=', $sku_empresa)->find($sku_empresa);
+            $sku = $Empresa->sku_empresa;
+
+
+                $DetallePLanillas = DB::table('empleados')
+                                 ->join('detalle_nominas', 'empleados.id', '=', 'detalle_nominas.empleado_id')
+
+                                 ->join('users', 'empleados.empleado_id', '=', 'users.user_id')
+                                 ->join('encabezado_nominas', 'detalle_nominas.encabezado_nominas_id', '=', 'encabezado_nominas.id')
+
+                                 ->select(
+                                    'detalle_nominas.id as codigo_nomina',
+
+                                    'detalle_nominas.bonificacion_ley as bono',
+                                    'detalle_nominas.total_hrs_extras as h_extras',
+
+
+                                    'empleados.*',
+                                    'users.avatar',
+                                    'encabezado_nominas.mes',
+
+                                    'encabezado_nominas.ano',
+                                    )
+                                 ->where('detalle_nominas.id',$impimirempleado)->first();
+
+
+                         //    dd($DetallePLanillas);
+
+
+        return view('reportes.ficha_pago_empleado' , compact('DetallePLanillas'));
+
+        }
 
     public function searchEmpresa(Request $request)
     {
 
 
      //  dd($request);
-        if (Auth::user()->nombre_rol=='Admin')
+        if (Auth::user()->nombre_rol=='Admin' || Auth::user()->nombre_rol=='Super Admin' )
         {
             $empresas   = DB::table('empresas')->get();
          //   $result     = DB::table('users')->get();
@@ -146,6 +213,7 @@ class EmpresaController extends Controller
         $request->validate([
             'nombre'      => 'required|string|max:255',
             'email'     => 'required|string|email|max:255|unique:empresas',
+            'logo'     => 'required|image',
 
 
         ]);
@@ -268,12 +336,12 @@ class EmpresaController extends Controller
         DB::table('user_activity_logs')->insert($activityLog);
          Empresa::where('sku_empresa',$request->sku_empresa)->update($update);
          DB::commit();
-         Toastr::success('User updated successfully :)','Success');
+         Toastr::success('Empresa actualizada con éxito :)','Success');
          return redirect()->route('form/empresas/page');
 
      }catch(\Exception $e){
          DB::rollback();
-         Toastr::error('User update fail :)','Error');
+         Toastr::error('Falla la actualización de la Empresa :)','Error');
          return redirect()->back();
      }
 

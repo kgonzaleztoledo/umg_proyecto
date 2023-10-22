@@ -65,6 +65,9 @@ Route::controller(EmpresaController::class)->group(function () {
 Route::get('form/empresas/page', 'index')->middleware('auth')->name('form/empresas/page'); // ruta index
 Route::get('form/rol_usuario/page', 'indexrolUsuario')->middleware('auth')->name('form/rol_usuario/page');// ruta CRUD ROL USUARIO
 Route::get('form/descuentos/page', 'indexDescuento')->middleware('auth')->name('form/descuentos/page'); // ruta CRUD DESCUENTO
+Route::get('form/planillaselectronica/page', 'indexPlanillaElectronica')->middleware('auth')->name('form/planillaselectronica/page'); // ruta CRUD NOMINA ELECTRONICA PLANILLA
+Route::get('todos/planillasdetalle/mostrar/view/{employeid}', 'viewDetallePlanilla');//Muestra Detalle Planilla Electronica
+Route::get('mostrar/impimir/empleado/{impimirempleado}', 'ImprimirReporteEmpleado');//Impime Hoja Empleado
 Route::get('form/departamentos/page', 'indexDepartamento')->middleware('auth')->name('form/departamentos/page'); // ruta CRUD DESCUENTO
 Route::get('form/puestos/page', 'indexPuesto')->middleware('auth')->name('form/puestos/page'); // ruta CRUD Puesto
 Route::get('form/planillas/page', 'indexPlanilla')->middleware('auth')->name('form/planillas/page'); // ruta CRUD Tipo de Planilla
@@ -87,6 +90,46 @@ Route::controller(UserManagementController::class)->group(function () {
 // ----------------------------- Empleado Perfil ------------------------------//
 Route::controller(EmpleadoController::class)->group(function () {
     Route::get('empleado/perfil/{user_id}', 'perfilEmpleado')->middleware('auth');
+
+    Route::get('todos/empleados/card', 'tarjetaTodosEmpleado')->middleware('auth')->name('todos/empleados/card'); //Lista todos los Empleado en un Tarjeta
+    Route::get('todos/empleados/lista', 'listaTodosEmpleado')->middleware('auth')->name('todos/empleados/lista');  //Lista todos los usuarios en una tabla
+   // all/empleado/search
+    Route::post('all/empleado/search', 'empleadoSearch')->name('all/empleado/search');  //ruta para hacer busqueda de empleado
+    Route::post('todos/empleado/save', 'saveEmpleadoRecord')->middleware('auth')->name('todos/empleado/save'); //Ruta para INsertar los datos Empleados
+
+    Route::get('todos/empleados/delete/{empleado_id}', 'deleteRecord')->middleware('auth');//Eliminar Empleados
+
+
+    Route::get('todos/empleados/mostrar/edit/{employee_id}', 'viewRecord');//Muestrorar editar Empleado
+
+    Route::post('all/employee/update', 'updateRecord')->middleware('auth')->name('all/employee/update');
+
+
+    Route::post('all/employee/list/search', 'employeeListSearch')->name('all/employee/list/search');
+
+    Route::get('form/departments/page', 'index')->middleware('auth')->name('form/departments/page');
+    Route::post('form/departments/save', 'saveRecordDepartment')->middleware('auth')->name('form/departments/save');
+    Route::post('form/department/update', 'updateRecordDepartment')->middleware('auth')->name('form/department/update');
+    Route::post('form/department/delete', 'deleteRecordDepartment')->middleware('auth')->name('form/department/delete');
+
+    Route::get('form/designations/page', 'designationsIndex')->middleware('auth')->name('form/designations/page');
+    Route::post('form/designations/save', 'saveRecordDesignations')->middleware('auth')->name('form/designations/save');
+    Route::post('form/designations/update', 'updateRecordDesignations')->middleware('auth')->name('form/designations/update');
+    Route::post('form/designations/delete', 'deleteRecordDesignations')->middleware('auth')->name('form/designations/delete');
+
+    Route::get('form/timesheet/page', 'timeSheetIndex')->middleware('auth')->name('form/timesheet/page');
+    Route::post('form/timesheet/save', 'saveRecordTimeSheets')->middleware('auth')->name('form/timesheet/save');
+    Route::post('form/timesheet/update', 'updateRecordTimeSheets')->middleware('auth')->name('form/timesheet/update');
+    Route::post('form/timesheet/delete', 'deleteRecordTimeSheets')->middleware('auth')->name('form/timesheet/delete');
+
+    Route::get('form/overtime/page', 'overTimeIndex')->middleware('auth')->name('form/overtime/page');
+    Route::post('form/overtime/save', 'saveRecordOverTime')->middleware('auth')->name('form/overtime/save');
+    Route::post('form/overtime/update', 'updateRecordOverTime')->middleware('auth')->name('form/overtime/update');
+    Route::post('form/overtime/delete', 'deleteRecordOverTime')->middleware('auth')->name('form/overtime/delete');
+
+
+
+
 });
 
 
@@ -172,7 +215,7 @@ Route::controller(UserManagementController::class)->group(function () {
 
 // ----------------------------- job ------------------------------//
 Route::controller(JobController::class)->group(function () {
-    Route::get('form/job/list','jobList')->name('form/job/list');
+  //  Route::get('form/job/list','jobList')->name('form/job/list');
     Route::get('form/job/view/{id}', 'jobView');
     Route::get('user/dashboard/index', 'userDashboard')->middleware('auth')->name('user/dashboard/index');
     Route::get('jobs/dashboard/index', 'jobsDashboard')->middleware('auth')->name('jobs/dashboard/index');
@@ -205,38 +248,6 @@ Route::controller(JobController::class)->group(function () {
     Route::get('page/schedule/timing', 'scheduleTimingIndex')->middleware('auth')->name('page/schedule/timing');
     Route::get('page/aptitude/result', 'aptituderesultIndex')->middleware('auth')->name('page/aptitude/result');
 
-});
-
-// ----------------------------- formulario empleado ------------------------------//
-Route::controller(EmployeeController::class)->group(function () {
-    Route::get('all/employee/card', 'cardAllEmployee')->middleware('auth')->name('all/employee/card');
-    Route::get('todo/empleado/lista', 'listaTodosEmpleado')->middleware('auth')->name('todo/empleado/lista');  //terminado
-    Route::post('all/employee/save', 'saveRecord')->middleware('auth')->name('all/employee/save');
-    Route::get('all/employee/view/edit/{employee_id}', 'viewRecord');
-    Route::post('all/employee/update', 'updateRecord')->middleware('auth')->name('all/employee/update');
-    Route::get('all/employee/delete/{employee_id}', 'deleteRecord')->middleware('auth');
-    Route::post('all/employee/search', 'employeeSearch')->name('all/employee/search');
-    Route::post('all/employee/list/search', 'employeeListSearch')->name('all/employee/list/search');
-
-    Route::get('form/departments/page', 'index')->middleware('auth')->name('form/departments/page');
-    Route::post('form/departments/save', 'saveRecordDepartment')->middleware('auth')->name('form/departments/save');
-    Route::post('form/department/update', 'updateRecordDepartment')->middleware('auth')->name('form/department/update');
-    Route::post('form/department/delete', 'deleteRecordDepartment')->middleware('auth')->name('form/department/delete');
-
-    Route::get('form/designations/page', 'designationsIndex')->middleware('auth')->name('form/designations/page');
-    Route::post('form/designations/save', 'saveRecordDesignations')->middleware('auth')->name('form/designations/save');
-    Route::post('form/designations/update', 'updateRecordDesignations')->middleware('auth')->name('form/designations/update');
-    Route::post('form/designations/delete', 'deleteRecordDesignations')->middleware('auth')->name('form/designations/delete');
-
-    Route::get('form/timesheet/page', 'timeSheetIndex')->middleware('auth')->name('form/timesheet/page');
-    Route::post('form/timesheet/save', 'saveRecordTimeSheets')->middleware('auth')->name('form/timesheet/save');
-    Route::post('form/timesheet/update', 'updateRecordTimeSheets')->middleware('auth')->name('form/timesheet/update');
-    Route::post('form/timesheet/delete', 'deleteRecordTimeSheets')->middleware('auth')->name('form/timesheet/delete');
-
-    Route::get('form/overtime/page', 'overTimeIndex')->middleware('auth')->name('form/overtime/page');
-    Route::post('form/overtime/save', 'saveRecordOverTime')->middleware('auth')->name('form/overtime/save');
-    Route::post('form/overtime/update', 'updateRecordOverTime')->middleware('auth')->name('form/overtime/update');
-    Route::post('form/overtime/delete', 'deleteRecordOverTime')->middleware('auth')->name('form/overtime/delete');
 });
 
 

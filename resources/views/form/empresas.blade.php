@@ -23,7 +23,7 @@
             </div>
 			<!-- /Page Header -->
 
-            <!-- Search Filter -->
+            <!-- Buscador de Filtros  -->
             <form action="{{ route('search/empresas/list') }}" method="POST">
                 @csrf
                 <div class="row filter-row">
@@ -109,7 +109,7 @@
         <!-- /Page Content -->
 
 
-        <!-- Add User Modal -->
+        <!-- Se llama el Modal Agregar Usuario -->
 
 
         <div id="add_empresa" class="modal custom-modal fade" role="dialog">
@@ -180,7 +180,7 @@
 
                                 <div class="col-sm-12">
                                     <label>Fotografia:</label>
-                                    <input class="form-control dropify" type="file" id="logo" name="logo">
+                                    <input class="form-control dropify" type="file" id="logo" name="logo" required>
                                 </div>
                             </div>
                             <br>

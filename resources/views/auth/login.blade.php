@@ -4,7 +4,7 @@
         <div class="account-content">
 
                  <!-- Plantilla de maquetacion
-            <a href="{{ route('form/job/list') }}" class="btn btn-primary apply-btn">Apply Job</a>
+            <a href="" class="btn btn-primary apply-btn">Apply Job</a>
                     Link de Restauracion
               -->
 

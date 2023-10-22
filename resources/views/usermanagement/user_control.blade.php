@@ -253,7 +253,7 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <label>Fotografía:</label>
-                                    <input class="form-control @error('image') is-invalid @enderror" type="file" id="image" name="image">
+                                    <input class="form-control @error('image') is-invalid @enderror" type="file" id="image" name="images" required>
                                     <input class="form-control" type="hidden" id="hidden_image" name="hidden_image">
                                 </div>
                             </div>
@@ -351,7 +351,7 @@
                                 <div class="col-sm-12">
                                     <label>Avatar</label>
                                     <input class="form-control" type="file" id="image" name="images">
-                                    <input type="hidden" name="hidden_image" id="e_image" value="">
+                                    <input type="hidden" name="hidden_image" id="e_image" >
                                 </div>
                             </div>
                             <br>
@@ -371,8 +371,8 @@
                 <div class="modal-content">
                     <div class="modal-body">
                         <div class="form-header">
-                            <h3>Delete User</h3>
-                            <p>Are you sure want to delete?</p>
+                            <h3>Eliminar Usuario</h3>
+                            <p>¿Estás segura de que quieres eliminar?</p>
                         </div>
                         <div class="modal-btn delete-action">
                             <form action="{{ route('user/delete') }}" method="POST">
@@ -381,7 +381,7 @@
                                 <input type="hidden" name="avatar" class="e_avatar" value="">
                                 <div class="row">
                                     <div class="col-6">
-                                        <button type="submit" class="btn btn-primary continue-btn submit-btn">Delete</button>
+                                        <button type="submit" class="btn btn-primary continue-btn submit-btn">Elimnar</button>
                                     </div>
                                     <div class="col-6">
                                         <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>

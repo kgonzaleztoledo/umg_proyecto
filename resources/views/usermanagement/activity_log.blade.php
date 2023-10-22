@@ -26,10 +26,10 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Name</th>
+                                    <th>Nombre del Usuario</th>
                                     <th>Email</th>
-                                    <th>Description</th>
-                                    <th>Date Time</th>
+                                    <th>Tipo de Sesión</th>
+                                    <th>Fecha y hora</th>
                                 </tr>
                             </thead>
                             <tbody>

@@ -28,6 +28,7 @@ class UserManagementController extends Controller
             $sku_empresa =Auth::user()->empresa_id;
             $result = DB::table('empresas')
             ->leftJoin('users','users.empresa_id','empresas.id')
+            ->where('empresa_id', '=', $sku_empresa)
             ->select('empresas.nombre as sucursal' ,'users.*')
             ->get();
 
@@ -82,7 +83,6 @@ class UserManagementController extends Controller
             // search by status
             if($request->estado)
             {   $i = $request->estado;
-                dd($i);
                 $result = User::where('estado','LIKE','%'.$i.'%')->get();
             }
 
@@ -249,7 +249,7 @@ class UserManagementController extends Controller
             'puesto'  => 'required|string|max:255',
             'departamento'=> 'required|string|max:255',
             'estado'    => 'required|string|max:255',
-            'image'     => 'required|image',
+            'images'     => 'required|image',
 
             'password'  => 'required|string|min:8|confirmed',
             'password_confirmation' => 'required',
@@ -265,6 +265,8 @@ class UserManagementController extends Controller
 
             $image_name = $request->hidden_image;
             $image = $request->file('images');
+
+           // dd($image);
             if($image_name =='img_n.jpg')
             {
                 if($image != '')
@@ -277,16 +279,11 @@ class UserManagementController extends Controller
 
                 if($image != '')
                 {
-                    unlink('assets/images/'.$image_name);
                     $image_name = rand() . '.' . $image->getClientOriginalExtension();
                     $image->move(public_path('/assets/images/'), $image_name);
+               //     unlink('assets/images/'.$image_name);
                 }
             }
-
-
-
-
-
 
             $user = new User;
             $user->nombre         = $request->nombre;
@@ -402,16 +399,21 @@ class UserManagementController extends Controller
     // delete
     public function delete(Request $request)
     {
+        //dd($request);
+
         $user = Auth::User();
+        //dd($user);
+
+
         Session::put('user', $user);
         $user=Session::get('user');
         DB::beginTransaction();
         try{
-            $fullName     = $user->name;
+            $fullName     = $user->nombre;
             $email        = $user->email;
-            $phone_number = $user->phone_number;
-            $status       = $user->status;
-            $role_name    = $user->role_name;
+            $phone_number = "55123614";
+            $status       = "Activo";
+            $role_name    = $user->nombre_rol;
 
             $dt       = Carbon::now();
             $todayDate = $dt->toDayDateTimeString();
@@ -432,16 +434,20 @@ class UserManagementController extends Controller
             if($request->avatar =='photo_defaults.jpg'){
                 User::destroy($request->id);
             }else{
+                if(is_null ($request->avatar)){
                 User::destroy($request->id);
-                unlink('assets/images/'.$request->avatar);
+                 }
+                else{
+                User::destroy($request->id);
+                unlink('assets/images/'.$request->avatar);}
             }
             DB::commit();
-            Toastr::success('User deleted successfully :)','Success');
+            Toastr::success('Usuario eliminada exitosamente :)','Success');
             return redirect()->route('userManagement');
 
         }catch(\Exception $e){
             DB::rollback();
-            Toastr::error('User deleted fail :)','Error');
+            Toastr::error('Error eliminado el usuario :)','Error');
             return redirect()->back();
         }
     }

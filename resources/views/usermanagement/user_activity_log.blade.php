@@ -26,13 +26,13 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Full Name</th>
-                                    <th>Email Address</th>
-                                    <th>Phone Number</th>
-                                    <th>Status</th>
-                                    <th>Role Name</th>
-                                    <th>Modify</th>
-                                    <th>Date Time</th>
+                                    <th>Nombre completo</th>
+                                    <th>Email </th>
+                                    <th>Numero de Contacto</th>
+                                    <th>Estado</th>
+                                    <th>Nombre del Rol</th>
+                                    <th>Acción</th>
+                                    <th>Fecha y hora</th>
                                 </tr>
                             </thead>
                             <tbody>

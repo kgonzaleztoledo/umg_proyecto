@@ -6,9 +6,14 @@ use Illuminate\Http\Request;
 use DB;
 use Brian2694\Toastr\Facades\Toastr;
 use App\Models\Employee;
+use App\Models\Empleado;
 use App\Models\Empresa;
+use App\Models\PersonalInformacion;
+
 use App\Models\Puesto as Puestos;
 use App\Models\PersonalDepartamento as PersonalDepartamentos;
+
+use App\Models\FamiliaInformacion as Familiares;
 
 use App\Models\department;
 use App\Models\User;
@@ -19,23 +24,77 @@ use Auth;
 class EmpleadoController extends Controller
 {
     // all employee card view
-    public function cardAllEmployee(Request $request)
+    public function tarjetaTodosEmpleado(Request $request)
     {
+
+        $departamentos   = DB::table('personal_departamentos')
+        ->orderBy('nombre', 'asc')
+        ->get();
+        $puestos   = DB::table('puestos')
+        ->orderBy('nombre', 'asc')
+        ->get();
+
+
         $users = DB::table('users')
-                    ->join('employees', 'users.user_id', '=', 'employees.employee_id')
-                    ->select('users.*', 'employees.birth_date', 'employees.gender', 'employees.company')
+                    ->join('empleados', 'users.user_id', '=', 'empleados.empleado_id')
+                    ->join('empresas', 'empresas.id', '=', 'users.empresa_id')
+                    ->join('personal_informacion', 'personal_informacion.user_id', '=', 'users.user_id')
+                    ->join('perfil_informacion', 'perfil_informacion.user_id', '=', 'users.user_id')
+                    ->select('users.*',
+                             'empleados.fecha_inicio_laboral',
+                             'empleados.genero',
+                             'empleados.salario',
+                             'empleados.tipo_contrato',
+                             'empleados.tipo_pago',
+                             'empresas.nombre as empresa',
+                             'perfil_informacion.departamento',
+                             'perfil_informacion.puesto_designado',
+                             'perfil_informacion.direccion'
+                             )
                     ->get();
-        $userList = DB::table('users')->get();
-        $permission_lists = DB::table('permission_lists')->get();
-        return view('form.allemployeecard',compact('users','userList','permission_lists'));
+
+         //    dd($users);
+
+        $userList = DB::table('users')
+                        ->join('empresas', 'empresas.id', '=', 'users.empresa_id')
+                        ->join('personal_informacion', 'personal_informacion.user_id', '=', 'users.user_id')
+                        ->join('perfil_informacion', 'perfil_informacion.user_id', '=', 'users.user_id')
+                        ->select(
+                            'users.id',
+                            'users.user_id',
+                            'empresas.sku_empresa',
+                            'users.nombre as nombre_usuario',
+                            'users.email',
+                            'personal_informacion.cui_dpi',
+                            'personal_informacion.no_cuenta',
+                            'personal_informacion.tipo_cuenta',
+                            'perfil_informacion.nombre_completo',
+                            'perfil_informacion.departamento',
+                            'perfil_informacion.puesto_designado',
+                            'perfil_informacion.genero',
+                            'perfil_informacion.telefono_movil',
+
+                            'perfil_informacion.direccion',
+                            'empresas.nombre as nombre_empresa'
+                            )
+                        ->get();
+
+           //  dd($userList);
+    //    $permission_lists = DB::table('permission_lists')->get();
+
+        return view('form.todosempleadocard',compact('users','userList','departamentos','puestos'));
     }
     // all employee list
     public function listaTodosEmpleado()
     {
         $users = DB::table('users')
-                    ->join('employees', 'users.user_id', '=', 'employees.employee_id')
+                    ->join('empleados', 'users.user_id', '=', 'empleados.empleado_id')
                     ->join('empresas', 'empresas.id', '=', 'users.empresa_id')
-                    ->select('users.*', 'employees.birth_date', 'employees.gender', 'employees.company', 'empresas.nombre as empresa')
+                    ->select(
+                        'users.*',
+                        'empleados.fecha_inicio_laboral',
+                        'employees.genero',
+                          'empresas.nombre as empresa')
                     ->get();
 
        // CONDICION SI ES SUPERAMDIN O ADMIN
@@ -56,73 +115,69 @@ class EmpleadoController extends Controller
     }
 
     // save data employee
-    public function saveRecord(Request $request)
+    public function saveEmpleadoRecord(Request $request)
     {
-        $request->validate([
-            'name'        => 'required|string|max:255',
-            'email'       => 'required|string|email',
-            'birthDate'   => 'required|string|max:255',
-            'gender'      => 'required|string|max:255',
-            'employee_id' => 'required|string|max:255',
-            'company'     => 'required|string|max:255',
-        ]);
+
+
+ //dd($request);
+
+                     $request->validate([
+                        'cui_dpi'        => 'required',
+                     'nombre_empleado'        => 'required|string|max:255',
+                     'salario'        => 'required'
+                        ]);
 
         DB::beginTransaction();
         try{
 
-            $employees = Employee::where('email', '=',$request->email)->first();
-            if ($employees === null)
+            $empleados = Empleado::where('email', '=',$request->email)->first();
+            if ($empleados === null)
             {
 
-                $employee = new Employee;
-                $employee->name         = $request->name;
-                $employee->email        = $request->email;
-                $employee->birth_date   = $request->birthDate;
-                $employee->gender       = $request->gender;
-                $employee->employee_id  = $request->employee_id;
-                $employee->company      = $request->company;
-                $employee->save();
+                $empleado = new Empleado;
+                $empleado->user_id         = $request->user_id;
+                $empleado->empleado_id        = $request->empleado_id;
+                $empleado->sku_empresa   = $request->sku_empresa;
+                $empleado->nombre_empleado       = $request->nombre_empleado;
 
-                for($i=0;$i<count($request->id_count);$i++)
-                {
-                    $module_permissions = [
-                        'employee_id' => $request->employee_id,
-                        'module_permission' => $request->permission[$i],
-                        'id_count'          => $request->id_count[$i],
-                        'read'              => $request->read[$i],
-                        'write'             => $request->write[$i],
-                        'create'            => $request->create[$i],
-                        'delete'            => $request->delete[$i],
-                        'import'            => $request->import[$i],
-                        'export'            => $request->export[$i],
-                    ];
-                    DB::table('module_permissions')->insert($module_permissions);
-                }
+                $empleado->cui_dpi       = $request->cui_dpi;
+
+                $empleado->email  = $request->email;
+                $empleado->genero      = $request->genero;
+                $empleado->no_cuenta      = $request->no_cuenta;
+                $empleado->tipo_cuenta      = $request->tipo_cuenta;
+                $empleado->departamento      = $request->departamento;
+
+                $empleado->puesto    =$request->puesto;
+                $empleado->direccion      = $request->direccion;
+                $empleado->celular      = $request->celular;
+                $empleado->fecha_inicio_laboral      = $request->fecha_inicio_laboral;
+                $empleado->tipo_contrato      = $request->tipo_contrato;
+                $empleado->tipo_pago      = $request->tipo_pago;
+                $empleado->salario      = $request->salario;
+                $empleado->save();
 
                 DB::commit();
                 Toastr::success('Nuevo empleada agregado con éxito :)','Success');
-                return redirect()->route('all/employee/card');
+                return redirect()->route('todos/empleados/card');
             } else {
                 DB::rollback();
-                Toastr::error('Empleado ya agregado y Registrado por favor Validar Acción :(','Error');
-                return redirect()->back();
+                Toastr::error('Empleado ya Registrado por favor Validar Acción :(','Error');
+                return redirect()->route('todos/empleados/card');
             }
         }catch(\Exception $e){
             DB::rollback();
-            Toastr::error('Empleado ya agregado y Registrado por favor Validar Acción :(','Error');
-            return redirect()->back();
+            Toastr::error('Empleado ya  Registrado por favor Validar Acción :(','Error');
+            return redirect()->route('todos/empleados/card');
         }
     }
     // view edit record
     public function viewRecord($employee_id)
     {
-        $permission = DB::table('employees')
-            ->join('module_permissions', 'employees.employee_id', '=', 'module_permissions.employee_id')
-            ->select('employees.*', 'module_permissions.*')
-            ->where('employees.employee_id','=',$employee_id)
-            ->get();
-        $employees = DB::table('employees')->where('employee_id',$employee_id)->get();
-        return view('form.edit.editemployee',compact('employees','permission'));
+
+
+        $employees = DB::table('empleados')->where('empleado_id',$employee_id)->get();
+        return view('form.edit.editemployee',compact('employees'));
     }
     // update record employee
     public function updateRecord( Request $request)
@@ -164,7 +219,7 @@ class EmpleadoController extends Controller
             }
 
             User::where('id',$request->id)->update($updateUser);
-            Employee::where('id',$request->id)->update($updateEmployee);
+            Empleado::where('id',$request->id)->update($updateEmployee);
 
             DB::commit();
             Toastr::success('updated record successfully :)','Success');
@@ -176,104 +231,245 @@ class EmpleadoController extends Controller
         }
     }
     // delete record
-    public function deleteRecord($employee_id)
+    public function deleteRecord($empleado_id)
     {
+      //  dd($empleado_id);
         DB::beginTransaction();
         try{
 
-            Employee::where('employee_id',$employee_id)->delete();
-            module_permission::where('employee_id',$employee_id)->delete();
+            Empleado::where('empleado_id',$empleado_id)->delete();
+         //   module_permission::where('employee_id',$employee_id)->delete();
 
             DB::commit();
-            Toastr::success('Delete record successfully :)','Success');
-            return redirect()->route('all/employee/card');
+            Toastr::success('Registro elimimado exitosamente:)','Success');
+            return redirect()->route('todos/empleados/card');
 
         }catch(\Exception $e){
             DB::rollback();
-            Toastr::error('Delete record fail :)','Error');
+            Toastr::error('Error al eliminar registro :)','Error');
             return redirect()->back();
         }
     }
     // employee search
-    public function employeeSearch(Request $request)
+    public function empleadoSearch(Request $request)
     {
+
+        $departamentos   = DB::table('personal_departamentos')
+        ->orderBy('nombre', 'asc')
+        ->get();
+        $puestos   = DB::table('puestos')
+        ->orderBy('nombre', 'asc')
+        ->get();
+
         $users = DB::table('users')
-                    ->join('employees', 'users.user_id', '=', 'employees.employee_id')
-                    ->select('users.*', 'employees.birth_date', 'employees.gender', 'employees.company')
+                    ->join('empleados', 'users.user_id', '=', 'empleados.empleado_id')
+                    ->join('empresas', 'empresas.id', '=', 'users.empresa_id')
+                    ->join('personal_informacion', 'personal_informacion.user_id', '=', 'users.user_id')
+                    ->join('perfil_informacion', 'perfil_informacion.user_id', '=', 'users.user_id')
+                    ->select('users.*',
+                            'empleados.fecha_inicio_laboral',
+                            'empleados.genero',
+                            'empleados.tipo_contrato',
+                            'empleados.tipo_pago',
+                            'empleados.salario',
+                            'empresas.nombre as empresa',
+                            'perfil_informacion.departamento',
+                            'perfil_informacion.puesto_designado',
+                            'perfil_informacion.direccion'
+                            )
                     ->get();
-        $permission_lists = DB::table('permission_lists')->get();
-        $userList = DB::table('users')->get();
+
+               // dd($users);
+
+
+
+        $userList = DB::table('users')
+                        ->join('empresas', 'empresas.id', '=', 'users.empresa_id')
+                        ->join('personal_informacion', 'personal_informacion.user_id', '=', 'users.user_id')
+                        ->join('perfil_informacion', 'perfil_informacion.user_id', '=', 'users.user_id')
+                        ->select(
+                            'users.id',
+                            'users.user_id',
+                            'empresas.sku_empresa',
+                            'users.nombre as nombre_usuario',
+                            'users.email',
+                            'personal_informacion.cui_dpi',
+                            'personal_informacion.no_cuenta',
+                            'personal_informacion.tipo_cuenta',
+                            'perfil_informacion.nombre_completo',
+                            'perfil_informacion.departamento',
+                            'perfil_informacion.puesto_designado',
+                            'perfil_informacion.genero',
+                            'perfil_informacion.telefono_movil',
+                            'empresas.nombre as nombre_empresa'
+                            )
+                        ->get();
+
+
 
         // search by id
-        if($request->employee_id)
+        if($request->empleado_id)
         {
             $users = DB::table('users')
-                        ->join('employees', 'users.user_id', '=', 'employees.employee_id')
-                        ->select('users.*', 'employees.birth_date', 'employees.gender', 'employees.company')
-                        ->where('employee_id','LIKE','%'.$request->employee_id.'%')
+            ->join('empleados', 'users.user_id', '=', 'empleados.empleado_id')
+            ->join('empresas', 'empresas.id', '=', 'users.empresa_id')
+            ->join('personal_informacion', 'personal_informacion.user_id', '=', 'users.user_id')
+            ->join('perfil_informacion', 'perfil_informacion.user_id', '=', 'users.user_id')
+            ->select('users.*',
+                    'empleados.fecha_inicio_laboral',
+                    'empleados.genero',
+                    'empleados.tipo_contrato',
+                    'empleados.tipo_pago',
+                    'empleados.salario',
+                    'empresas.nombre as empresa',
+                    'perfil_informacion.departamento',
+                    'perfil_informacion.puesto_designado',
+                    'perfil_informacion.direccion'
+                    )
+                        ->where('empleado_id','LIKE','%'.$request->empleado_id.'%')
                         ->get();
         }
         // search by name
-        if($request->name)
+        if($request->nombre)
         {
             $users = DB::table('users')
-                        ->join('employees', 'users.user_id', '=', 'employees.employee_id')
-                        ->select('users.*', 'employees.birth_date', 'employees.gender', 'employees.company')
-                        ->where('users.name','LIKE','%'.$request->name.'%')
+            ->join('empleados', 'users.user_id', '=', 'empleados.empleado_id')
+            ->join('empresas', 'empresas.id', '=', 'users.empresa_id')
+            ->join('personal_informacion', 'personal_informacion.user_id', '=', 'users.user_id')
+            ->join('perfil_informacion', 'perfil_informacion.user_id', '=', 'users.user_id')
+            ->select('users.*',
+                    'empleados.fecha_inicio_laboral',
+                    'empleados.genero',
+                    'empleados.tipo_contrato',
+                    'empleados.tipo_pago',
+                    'empleados.salario',
+                    'empresas.nombre as empresa',
+                    'perfil_informacion.departamento',
+                    'perfil_informacion.puesto_designado',
+                    'perfil_informacion.direccion'
+                    )
+                        ->where('users.nombre','LIKE','%'.$request->nombre.'%')
                         ->get();
         }
         // search by name
-        if($request->position)
+        if($request->puesto)
         {
             $users = DB::table('users')
-                        ->join('employees', 'users.user_id', '=', 'employees.employee_id')
-                        ->select('users.*', 'employees.birth_date', 'employees.gender', 'employees.company')
-                        ->where('users.position','LIKE','%'.$request->position.'%')
+            ->join('empleados', 'users.user_id', '=', 'empleados.empleado_id')
+            ->join('empresas', 'empresas.id', '=', 'users.empresa_id')
+            ->join('personal_informacion', 'personal_informacion.user_id', '=', 'users.user_id')
+            ->join('perfil_informacion', 'perfil_informacion.user_id', '=', 'users.user_id')
+            ->select('users.*',
+                    'empleados.fecha_inicio_laboral',
+                    'empleados.genero',
+                    'empleados.tipo_contrato',
+                    'empleados.tipo_pago',
+                    'empleados.salario',
+                    'empresas.nombre as empresa',
+                    'perfil_informacion.departamento',
+                    'perfil_informacion.puesto_designado',
+                    'perfil_informacion.direccion'
+                    )
+                        ->where('users.puesto','LIKE','%'.$request->puesto.'%')
                         ->get();
         }
 
         // search by name and id
-        if($request->employee_id && $request->name)
+        if($request->empleado_id && $request->nombre)
         {
             $users = DB::table('users')
-                        ->join('employees', 'users.user_id', '=', 'employees.employee_id')
-                        ->select('users.*', 'employees.birth_date', 'employees.gender', 'employees.company')
-                        ->where('employee_id','LIKE','%'.$request->employee_id.'%')
-                        ->where('users.name','LIKE','%'.$request->name.'%')
+            ->join('empleados', 'users.user_id', '=', 'empleados.empleado_id')
+            ->join('empresas', 'empresas.id', '=', 'users.empresa_id')
+            ->join('personal_informacion', 'personal_informacion.user_id', '=', 'users.user_id')
+            ->join('perfil_informacion', 'perfil_informacion.user_id', '=', 'users.user_id')
+            ->select('users.*',
+                    'empleados.fecha_inicio_laboral',
+                    'empleados.genero',
+                    'empleados.tipo_contrato',
+                    'empleados.tipo_pago',
+                    'empleados.salario',
+                    'empresas.nombre as empresa',
+                    'perfil_informacion.departamento',
+                    'perfil_informacion.puesto_designado',
+                    'perfil_informacion.direccion'
+                    )
+                        ->where('empleado_id','LIKE','%'.$request->empleado_id.'%')
+                        ->where('users.nombre','LIKE','%'.$request->nombre.'%')
                         ->get();
         }
         // search by position and id
-        if($request->employee_id && $request->position)
+        if($request->empleado_id && $request->puesto)
         {
             $users = DB::table('users')
-                        ->join('employees', 'users.user_id', '=', 'employees.employee_id')
-                        ->select('users.*', 'employees.birth_date', 'employees.gender', 'employees.company')
-                        ->where('employee_id','LIKE','%'.$request->employee_id.'%')
-                        ->where('users.position','LIKE','%'.$request->position.'%')
+            ->join('empleados', 'users.user_id', '=', 'empleados.empleado_id')
+            ->join('empresas', 'empresas.id', '=', 'users.empresa_id')
+            ->join('personal_informacion', 'personal_informacion.user_id', '=', 'users.user_id')
+            ->join('perfil_informacion', 'perfil_informacion.user_id', '=', 'users.user_id')
+            ->select('users.*',
+                    'empleados.fecha_inicio_laboral',
+                    'empleados.genero',
+                    'empleados.tipo_contrato',
+                    'empleados.tipo_pago',
+                    'empleados.salario',
+                    'empresas.nombre as empresa',
+                    'perfil_informacion.departamento',
+                    'perfil_informacion.puesto_designado',
+                    'perfil_informacion.direccion'
+                    )
+                        ->where('empleado_id','LIKE','%'.$request->empleado_id.'%')
+                        ->where('users.puesto','LIKE','%'.$request->puesto.'%')
                         ->get();
         }
         // search by name and position
-        if($request->name && $request->position)
+        if($request->nombre && $request->puesto)
         {
             $users = DB::table('users')
-                        ->join('employees', 'users.user_id', '=', 'employees.employee_id')
-                        ->select('users.*', 'employees.birth_date', 'employees.gender', 'employees.company')
-                        ->where('users.name','LIKE','%'.$request->name.'%')
-                        ->where('users.position','LIKE','%'.$request->position.'%')
+            ->join('empleados', 'users.user_id', '=', 'empleados.empleado_id')
+            ->join('empresas', 'empresas.id', '=', 'users.empresa_id')
+            ->join('personal_informacion', 'personal_informacion.user_id', '=', 'users.user_id')
+            ->join('perfil_informacion', 'perfil_informacion.user_id', '=', 'users.user_id')
+            ->select('users.*',
+                    'empleados.fecha_inicio_laboral',
+                    'empleados.genero',
+                    'empleados.tipo_contrato',
+                    'empleados.tipo_pago',
+                    'empleados.salario',
+                    'empresas.nombre as empresa',
+                    'perfil_informacion.departamento',
+                    'perfil_informacion.puesto_designado',
+                    'perfil_informacion.direccion'
+                    )
+                     ->where('users.nombre','LIKE','%'.$request->nombre.'%')
+                    ->where('users.puesto','LIKE','%'.$request->puesto.'%')
                         ->get();
         }
          // search by name and position and id
-         if($request->employee_id && $request->name && $request->position)
+         if($request->empleado_id && $request->nombre && $request->puesto)
          {
              $users = DB::table('users')
-                         ->join('employees', 'users.user_id', '=', 'employees.employee_id')
-                         ->select('users.*', 'employees.birth_date', 'employees.gender', 'employees.company')
-                         ->where('employee_id','LIKE','%'.$request->employee_id.'%')
-                         ->where('users.name','LIKE','%'.$request->name.'%')
-                         ->where('users.position','LIKE','%'.$request->position.'%')
+             ->join('empleados', 'users.user_id', '=', 'empleados.empleado_id')
+             ->join('empresas', 'empresas.id', '=', 'users.empresa_id')
+             ->join('personal_informacion', 'personal_informacion.user_id', '=', 'users.user_id')
+             ->join('perfil_informacion', 'perfil_informacion.user_id', '=', 'users.user_id')
+             ->select('users.*',
+                     'empleados.fecha_inicio_laboral',
+                     'empleados.genero',
+                     'empleados.tipo_contrato',
+                     'empleados.tipo_pago',
+                     'empleados.salario',
+                     'empresas.nombre as empresa',
+                     'perfil_informacion.departamento',
+                     'perfil_informacion.puesto_designado',
+                     'perfil_informacion.direccion'
+                     )
+                         ->where('empleado_id','LIKE','%'.$request->empleado_id.'%')
+                         ->where('users.nombre','LIKE','%'.$request->nombre.'%')
+                         ->where('users.puesto','LIKE','%'.$request->puesto.'%')
                          ->get();
+
+                        // dd($users);
          }
-        return view('form.allemployeecard',compact('users','userList','permission_lists'));
+        return view('form.todosempleadocard',compact('users','userList','departamentos','puestos'));
     }
     public function employeeListSearch(Request $request)
     {
@@ -359,6 +555,16 @@ class EmpleadoController extends Controller
     // employee profile with all controller user
     public function perfilEmpleado($user_id)
     {
+
+
+     $familiares = Familiares::where('user_id', '=', $user_id)
+                                ->get();
+     $famContactos = Familiares::where('user_id', '=', $user_id)
+                                ->where('contacto_emergencia', '=', 'SI')
+                                ->get();
+    //dd($famContactos);
+
+
         $Puestos   = DB::table('puestos')
         ->orderBy('nombre', 'asc')
         ->get();
@@ -393,7 +599,7 @@ class EmpleadoController extends Controller
                 ->get();
 
                 //dd($user);
-        return view('form.perfilempleado',compact('user','users','User','Puestos','PersonalDepartamentos'));
+        return view('form.perfilempleado',compact('user','users','User','Puestos','PersonalDepartamentos','familiares','famContactos'));
     }
 
     /** page departments */

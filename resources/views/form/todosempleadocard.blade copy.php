@@ -1,4 +1,3 @@
-
 @extends('layouts.master')
 @section('content')
 
@@ -17,10 +16,10 @@
                         </ul>
                     </div>
                     <div class="col-auto float-right ml-auto">
-                        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee"><i class="fa fa-plus"></i> Add Employee</a>
+                        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee"><i class="fa fa-plus"></i> Gestionar Empleado</a>
                         <div class="view-icons">
-                            <a href="{{ route('all/employee/card') }}" class="grid-view btn btn-link active"><i class="fa fa-th"></i></a>
-                            <a href="{{ route('todo/empleado/lista') }}" class="list-view btn btn-link"><i class="fa fa-bars"></i></a>
+                            <a href="{{ route('todos/empleados/card') }}" class="grid-view btn btn-link active"><i class="fa fa-th"></i></a>
+                            <a href="{{ route('todos/empleados/lista') }}" class="list-view btn btn-link"><i class="fa fa-bars"></i></a>
                         </div>
                     </div>
                 </div>
@@ -28,29 +27,29 @@
 			<!-- /Page Header -->
 
             <!-- Search Filter -->
-            <form action="{{ route('all/employee/search') }}" method="POST">
+            <form action="{{ route('all/empleado/search') }}" method="POST">
                 @csrf
                 <div class="row filter-row">
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus">
                             <input type="text" class="form-control floating" name="employee_id">
-                            <label class="focus-label">Employee ID</label>
+                            <label class="focus-label">Id Empleado</label>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus">
                             <input type="text" class="form-control floating" name="name">
-                            <label class="focus-label">Employee Name</label>
+                            <label class="focus-label">Nombres y apellido Empleado</label>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus">
                             <input type="text" class="form-control floating" name="position">
-                            <label class="focus-label">Position</label>
+                            <label class="focus-label">Puesto</label>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
-                        <button type="sumit" class="btn btn-success btn-block"> Search </button>
+                        <button type="sumit" class="btn btn-success btn-block"> Buscar </button>
                     </div>
                 </div>
             </form>
@@ -80,27 +79,32 @@
         </div>
         <!-- /Page Content -->
 
-        <!-- Add Employee Modal -->
+        <!-- Agregar Empleado abre  Modal -->
         <div id="add_employee" class="modal custom-modal fade" role="dialog">
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Add Employee</h5>
+                        <h5 class="modal-title">Agregar</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('all/employee/save') }}" method="POST">
+                        <form action="{{ route('todos/empleado/save') }}" method="POST">
                             @csrf
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label class="col-form-label">Full Name</label>
-                                        <select class="select select2s-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" id="name" name="name">
+                                        <label class="col-form-label">Nombre del Empleado</label>
+                                        <select  class="select select2s-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" id="name" name="name">
                                             <option value="">-- Select --</option>
                                             @foreach ($userList as $key=>$user )
-                                                <option value="{{ $user->nombre }}" data-employee_id={{ $user->user_id }} data-email={{ $user->email }}>{{ $user->nombre }}</option>
+                                                <option value="{{ $user->nombre_usuario }}"
+                                                    data-employee_id={{ $user->user_id }}
+                                                    data-email={{ $user->email }}>
+
+
+                                                    {{ $user->nombre_usuario }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -114,7 +118,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Birth Date</label>
+                                        <label>Fecha Ingreso Laboral</label>
                                         <div class="cal-icon">
                                             <input class="form-control datetimepicker" type="text" id="birthDate" name="birthDate">
                                         </div>
@@ -138,10 +142,10 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="col-form-label">Company</label>
-                                        <select class="select select2s-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" id="company" name="company">
+                                        <select class="select select2s-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" id="company" name="company" disabled>
                                             <option value="">-- Select --</option>
                                             @foreach ($userList as $key=>$user )
-                                                <option value="{{ $user->nombre }}">{{ $user->nombre }}</option>
+                                                <option value="{{ $user->nombre_empresa }}">{{ $user->nombre_empresa }}</option>
                                             @endforeach
                                         </select>
                                     </div>

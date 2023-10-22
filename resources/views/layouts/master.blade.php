@@ -123,10 +123,10 @@
 					</a>
 					<div class="dropdown-menu notifications">
 						<div class="topnav-dropdown-header">
-							<span class="notification-title">Notifications</span>
-							<a href="javascript:void(0)" class="clear-noti"> Clear All </a>
+							<span class="notification-title">Notificaciones</span>
+							<a href="javascript:void(0)" class="clear-noti"> Limpiar </a>
 						</div>
-						<div class="topnav-dropdown-footer"> <a href="#">View all Notifications</a> </div>
+						<div class="topnav-dropdown-footer"> <a href="#">Ver todas las notificaciones</a> </div>
 					</div>
 				</li>
 				<!-- /Notifications -->
@@ -138,10 +138,10 @@
 					</a>
 					<div class="dropdown-menu notifications">
 						<div class="topnav-dropdown-header">
-							<span class="notification-title">Messages</span>
-							<a href="javascript:void(0)" class="clear-noti"> Clear All </a>
+							<span class="notification-title">Mensajes</span>
+							<a href="javascript:void(0)" class="clear-noti"> Limpiar</a>
 						 </div>
-						<div class="topnav-dropdown-footer"> <a href="#">View all Messages</a> </div>
+						<div class="topnav-dropdown-footer"> <a href="#">Ver todos los mensajes</a> </div>
 					</div>
 				</li>
 				<!-- /Message Notifications -->
@@ -154,7 +154,7 @@
 					</a>
 					<div class="dropdown-menu">
 						<a class="dropdown-item" href="{{ route('perfil_usario') }}">Mi Perfil</a>
-						<a class="dropdown-item" href="{{ route('company/settings/page') }}">Ajustes</a>
+						<a class="dropdown-item" href="#">Ajustes</a>
 						<a class="dropdown-item" href="{{ route('logout') }}">Cerrar sesión</a>
 					</div>
 				</li>

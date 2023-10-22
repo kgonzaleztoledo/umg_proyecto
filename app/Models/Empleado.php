@@ -9,20 +9,25 @@ class Empleado extends Model
 {
     use HasFactory;
 
-    protected $table = "perfil_informacion";
+    protected $table = "empleados";
     protected $fillable = [
-        'nombre_completo',
+        'id',
+        'empleado_id',
         'user_id',
+        'user_id',
+        'sku_empresa',
+        'nombre_empleado',
         'email',
-        'fecha_nacimiento',
         'genero',
-        'direccion',
-        'estado',
-        'ciudad',
-        'codigo_postal',
-        'telefono_movil',
+        'cui_dpi',
+        'no_cuenta',
+        'tipo_cuenta',
         'departamento',
-        'puesto_designado',
-        'jefe_inmediato',
+        'puesto',
+        'direccion',
+        'celular',
+        'fecha_inicio_laboral',
+         'tipo_contrato',
+         'salario'
     ];
 }
